@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // Company logos with multiple fallback sources and brand colors
 const logos = [
@@ -173,7 +173,7 @@ const logos = [
     },
 ];
 
-function LogoItem({ logo, index }: { logo: typeof logos[0], index: number }) {
+function LogoItem({ logo }: { logo: typeof logos[0], index: number }) {
     const [currentSourceIndex, setCurrentSourceIndex] = useState(0);
     const [loadError, setLoadError] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -254,7 +254,7 @@ function LogoItem({ logo, index }: { logo: typeof logos[0], index: number }) {
 
 export function LogoMarquee() {
     const [isHovered, setIsHovered] = useState(false);
-    const [duplicatedLogos, setDuplicatedLogos] = useState([...logos, ...logos, ...logos]);
+    const [duplicatedLogos] = useState([...logos, ...logos, ...logos]);
 
     // Calculate total width for animation
     const logoWidth = 200; // Approximate width including padding
