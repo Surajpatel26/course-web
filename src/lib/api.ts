@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://course-backend-u9xp.onrender.com/api';
 
 function getToken() {
     return localStorage.getItem('token');
@@ -27,7 +27,7 @@ export const api = {
             },
             body: JSON.stringify(body)
         });
-        
+
         const data = await response.json();
         if (!response.ok) {
             throw new Error(data.error || `API error: ${response.status}`);
