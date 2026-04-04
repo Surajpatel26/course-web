@@ -1,100 +1,167 @@
+import { useEffect, useState } from 'react';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { blogPosts } from '../data/mockData';
+import { api } from '../lib/api';
+
+type BlogPost = {
+    id: string;
+    title: string;
+    excerpt: string;
+    author: string;
+    date: string;
+    image: string;
+    category: string;
+    readTime: string;
+    content: string;
+};
 
 export function Blog() {
-    return (
-        <div className="min-h-screen bg-[var(--background)] py-24 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    const [posts, setPosts] = useState<BlogPost[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-                <div className="text-center mb-16">
+    useEffect(() => {
+        let cancelled = false;
+        const fetchPosts = async () => {
+            try {
+                const data = await api.get<BlogPost[]>('/blog');
+                if (!cancelled) setPosts(data);
+            } catch (e) {
+                console.error('Failed to fetch blog posts', e);
+            } finally {
+                if (!cancelled) setIsLoading(false);
+            }
+        };
+        fetchPosts();
+        return () => { cancelled = true; };
+    }, []);
+
+    return (
+        <div className="min-h-screen bg-[var(--background)] py-32 transition-colors duration-500 overflow-hidden relative">
+            {/* Ambient Background Glows */}
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-500/5 rounded-full blur-[120px] -z-10" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-highlight-500/5 rounded-full blur-[120px] -z-10" />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="text-left mb-24 max-w-3xl">
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-highlight-500 text-xs font-black uppercase tracking-[0.4em] mb-6"
+                    >
+                        Insights & Perspective
+                    </motion.div>
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-5xl font-display font-bold text-[var(--foreground)] mb-4"
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-6xl md:text-8xl font-display font-black text-[var(--foreground)] mb-10 tracking-tighter leading-tight"
                     >
-                        Our <span className="text-brand-400">Blog</span>
+                        Elite <span className="text-gradient italic">Narratives.</span>
                     </motion.h1>
-                    <p className="text-lg text-[var(--foreground)]/60 max-w-2xl mx-auto">
-                        Latest news, tutorials, and insights from the team at CoursePro.
-                    </p>
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-xl md:text-2xl text-[var(--foreground)]/40 leading-relaxed font-medium tracking-tight"
+                    >
+                        Explorations in technology, design, and the architecting of future-proof skillsets.
+                    </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {blogPosts.map((post, i) => (
-                        <motion.article
-                            key={post.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            className="bg-[var(--card)] border border-[var(--foreground)]/10 rounded-3xl overflow-hidden group hover:border-brand-500/50 transition-all duration-300"
-                        >
-                            <div className="relative h-56 overflow-hidden">
-                                <img
-                                    src={post.image}
-                                    alt={post.title}
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                />
-                                <div className="absolute top-4 left-4">
-                                    <span className="bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                                        {post.category}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div className="p-8">
-                                <div className="flex items-center gap-4 text-xs text-[var(--foreground)]/40 mb-4">
-                                    <div className="flex items-center gap-1.5">
-                                        <Calendar className="w-4 h-4 text-brand-500" />
-                                        <span>{post.date}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    {isLoading ? (
+                        Array.from({ length: 6 }).map((_, i) => (
+                            <div key={i} className="h-[500px] rounded-[48px] bg-glass animate-pulse border border-[var(--glass-border)]" />
+                        ))
+                    ) : (
+                        posts.map((post, i) => (
+                            <motion.article
+                                key={post.id}
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1, duration: 0.8 }}
+                                className="group relative flex flex-col h-full bg-glass border border-[var(--glass-border)] rounded-[48px] overflow-hidden hover:bg-[var(--foreground)]/[0.03] transition-all duration-700 shadow-premium hover:shadow-2xl hover:border-brand-500/30"
+                            >
+                                <Link to={`/blog/${post.id}`} className="block h-64 overflow-hidden relative">
+                                    <img
+                                        src={post.image}
+                                        alt={post.title}
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
+                                    <div className="absolute top-8 left-8">
+                                        <span className="bg-brand-500 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-xl">
+                                            {post.category}
+                                        </span>
                                     </div>
-                                    <div className="flex items-center gap-1.5">
-                                        <Clock className="w-4 h-4 text-brand-500" />
-                                        <span>{post.readTime}</span>
-                                    </div>
-                                </div>
+                                </Link>
 
-                                <h3 className="text-xl font-bold text-[var(--foreground)] mb-3 line-clamp-2 group-hover:text-brand-500 transition-colors">
-                                    {post.title}
-                                </h3>
-
-                                <p className="text-[var(--foreground)]/60 text-sm mb-6 line-clamp-3 leading-relaxed">
-                                    {post.excerpt}
-                                </p>
-
-                                <div className="flex items-center justify-between pt-6 border-t border-[var(--foreground)]/10">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 text-xs font-bold">
-                                            {post.author.charAt(0)}
+                                <div className="p-10 flex-1 flex flex-col">
+                                    <div className="flex items-center gap-6 text-[var(--foreground)]/30 text-[10px] font-black uppercase tracking-widest mb-6">
+                                        <div className="flex items-center gap-2">
+                                            <Calendar className="w-3.5 h-3.5" />
+                                            <span>{post.date}</span>
                                         </div>
-                                        <span className="text-sm text-[var(--foreground)]/70 font-medium">{post.author}</span>
+                                        <div className="flex items-center gap-2">
+                                            <Clock className="w-3.5 h-3.5" />
+                                            <span>{post.readTime}</span>
+                                        </div>
                                     </div>
-                                    <Link
-                                        to={`/blog/${post.id}`}
-                                        className="text-brand-400 hover:text-brand-300 font-bold text-sm flex items-center gap-2 group/btn"
-                                    >
-                                        Read More
-                                        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                                    </Link>
+
+                                    <h3 className="text-2xl font-display font-black text-[var(--foreground)] mb-6 tracking-tight leading-[1.2] group-hover:text-brand-500 transition-colors uppercase italic">
+                                        {post.title}
+                                    </h3>
+
+                                    <p className="text-[var(--foreground)]/40 text-lg mb-8 line-clamp-3 leading-relaxed font-medium flex-1">
+                                        {post.excerpt}
+                                    </p>
+
+                                    <div className="flex items-center justify-between pt-8 border-t border-[var(--glass-border)]">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 rounded-2xl bg-brand-500 text-white flex items-center justify-center text-xs font-black shadow-lg">
+                                                {post.author?.charAt(0) || '?'}
+                                            </div>
+                                            <div>
+                                                <span className="block text-xs font-black text-[var(--foreground)] uppercase tracking-wider">{post.author || 'Member'}</span>
+                                                <span className="block text-[8px] font-black text-[var(--foreground)]/30 uppercase tracking-[0.2em]">Contributor</span>
+                                            </div>
+                                        </div>
+                                        <Link
+                                            to={`/blog/${post.id}`}
+                                            className="w-10 h-10 rounded-2xl bg-[var(--foreground)]/5 text-[var(--foreground)] flex items-center justify-center group-hover:bg-brand-500 group-hover:text-white transition-all transform group-hover:scale-110 active:scale-95"
+                                        >
+                                            <ArrowRight className="w-5 h-5" />
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                        </motion.article>
-                    ))}
+                            </motion.article>
+                        ))
+                    )}
                 </div>
 
-                <div className="mt-20 p-12 rounded-3xl bg-gradient-to-br from-brand-500/20 to-blue-500/20 border border-[var(--foreground)]/10 text-center">
-                    <h2 className="text-3xl font-bold text-[var(--foreground)] mb-4">Join our newsletter</h2>
-                    <p className="text-[var(--foreground)]/70 mb-8 max-w-xl mx-auto">Get the best of CoursePro delivered straight to your inbox. No spam, only high-quality content.</p>
-                    <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                        <input
-                            type="email"
-                            placeholder="your@email.com"
-                            className="bg-[var(--foreground)]/5 border border-[var(--foreground)]/10 rounded-xl px-6 py-3 text-[var(--foreground)] w-full focus:outline-none focus:border-brand-500 transition-all placeholder:text-[var(--foreground)]/20"
-                        />
-                        <button className="bg-brand-500 hover:bg-brand-600 text-white font-bold px-8 py-3 rounded-xl transition-all shadow-lg hover:shadow-brand-500/25">
-                            Subscribe
-                        </button>
+                {/* Newsletter Section - Revamped */}
+                <div className="mt-48 relative p-[1px] rounded-[64px] bg-premium-gradient overflow-hidden group">
+                    <div className="bg-glass-heavy backdrop-blur-3xl rounded-[63px] p-16 md:p-24 text-center relative z-10">
+                        <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-brand-500/10 text-brand-500 text-[10px] font-black uppercase tracking-[0.3em] mb-10 border border-brand-500/20">
+                            The Inner Circle
+                        </div>
+                        <h2 className="text-5xl md:text-7xl font-display font-black text-[var(--foreground)] mb-8 tracking-tighter leading-none italic uppercase">
+                            Stay <span className="text-gradient">Ahead.</span>
+                        </h2>
+                        <p className="text-xl md:text-2xl text-[var(--foreground)]/40 mb-16 max-w-2xl mx-auto leading-relaxed font-medium tracking-tight italic">
+                            Curated intelligence for visionaries, delivered straight to your portal.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-6 max-w-xl mx-auto">
+                            <input
+                                type="email"
+                                placeholder="ACCESS@DOMAIN.COM"
+                                className="bg-[var(--foreground)]/5 border border-[var(--glass-border)] rounded-full px-8 py-5 text-[var(--foreground)] w-full focus:outline-none focus:border-brand-500 transition-all font-black uppercase tracking-widest text-xs"
+                            />
+                            <button className="bg-premium-gradient text-white font-black px-12 py-5 rounded-full transition-all shadow-premium hover:-translate-y-1 active:scale-95 whitespace-nowrap uppercase tracking-widest text-xs">
+                                Subscribe
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

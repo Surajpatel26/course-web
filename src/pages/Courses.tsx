@@ -1,29 +1,46 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, Hash } from 'lucide-react';
-import { CourseCard } from '../components/ui/CourseCard';
-import { featuredCourses } from '../data/mockData';
+import { CourseCard, type Course } from '../components/ui/CourseCard';
+import { api } from '../lib/api';
 
 export function Courses() {
     const [searchTerm, setSearchTerm] = useState('');
     const [activeCategory, setActiveCategory] = useState('All');
 
+    const [courses, setCourses] = useState<Course[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const data = await api.get('/courses');
+                setCourses(data);
+            } catch (error) {
+                console.error("Failed to fetch courses:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchCourses();
+    }, []);
+
     // Get unique categories
     const categories = useMemo(() => {
-        const cats = ['All', ...new Set(featuredCourses.map(course => course.category))];
+        const cats = ['All', ...new Set(courses.map(course => course.category))];
         return cats;
-    }, []);
+    }, [courses]);
 
     // Filter and group courses
     const groupedCourses = useMemo(() => {
-        const filtered = featuredCourses.filter(course => {
+        const filtered = courses.filter(course => {
             const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
             const matchesCategory = activeCategory === 'All' || course.category === activeCategory;
             return matchesSearch && matchesCategory;
         });
 
-        const groups: Record<string, typeof featuredCourses> = {};
+        const groups: Record<string, Course[]> = {};
         filtered.forEach(course => {
             if (!groups[course.category]) {
                 groups[course.category] = [];
@@ -32,7 +49,7 @@ export function Courses() {
         });
 
         return groups;
-    }, [searchTerm, activeCategory]);
+    }, [courses, searchTerm, activeCategory]);
 
     return (
         <div className="min-h-screen bg-[var(--background)] py-20 transition-colors duration-300">
@@ -55,7 +72,7 @@ export function Courses() {
                         </div>
                         <div className="flex items-center gap-4 bg-[var(--foreground)]/5 border border-[var(--foreground)]/10 rounded-2xl p-2 backdrop-blur-xl">
                             <div className="px-4 py-2 border-r border-[var(--foreground)]/10">
-                                <span className="text-[var(--foreground)] font-bold text-2xl">{featuredCourses.length}</span>
+                                <span className="text-[var(--foreground)] font-bold text-2xl">{courses.length}</span>
                                 <span className="text-[var(--foreground)]/40 text-xs uppercase block font-black">Total Courses</span>
                             </div>
                             <div className="px-4 py-2">
@@ -104,7 +121,11 @@ export function Courses() {
                 {/* Grouped Courses Grid */}
                 <div className="space-y-24">
                     <AnimatePresence mode="popLayout">
-                        {Object.entries(groupedCourses).length > 0 ? (
+                        {isLoading ? (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-32 text-center">
+                                <div className="text-[var(--foreground)]/40 font-bold">Loading courses…</div>
+                            </motion.div>
+                        ) : Object.entries(groupedCourses).length > 0 ? (
                             Object.entries(groupedCourses).map(([category, courses], idx) => (
                                 <motion.section
                                     key={category}

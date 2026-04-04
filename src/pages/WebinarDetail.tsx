@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     Calendar,
@@ -9,11 +10,51 @@ import {
     Bell
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { upcomingWebinars } from '../data/mockData';
+import { api } from '../lib/api';
+import type { Webinar } from '../components/ui/WebinarCard';
 
 export function WebinarDetail() {
     const { id } = useParams();
-    const webinar = upcomingWebinars.find(w => w.id === id) || upcomingWebinars[0];
+    const [webinar, setWebinar] = useState<Webinar | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let cancelled = false;
+        const fetchWebinar = async () => {
+            try {
+                const list: Webinar[] = await api.get('/webinars');
+                const found = list.find(w => String(w.id) === String(id));
+                if (!cancelled) setWebinar(found || null);
+            } catch (e) {
+                console.error('Failed to fetch webinar', e);
+            } finally {
+                if (!cancelled) setIsLoading(false);
+            }
+        };
+        fetchWebinar();
+        return () => { cancelled = true; };
+    }, [id]);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-[var(--background)] pt-28 transition-colors duration-300">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-[var(--foreground)]/40 font-bold">Loading webinar…</div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!webinar) {
+        return (
+            <div className="min-h-screen bg-[var(--background)] pt-28 transition-colors duration-300">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">Webinar not found</h1>
+                    <p className="text-[var(--foreground)]/60">This webinar may have been removed.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[var(--background)] pt-20 transition-colors duration-300">

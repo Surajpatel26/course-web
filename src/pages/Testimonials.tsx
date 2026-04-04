@@ -1,8 +1,37 @@
+import { useEffect, useState } from 'react';
 import { Star, Quote, Rocket, ShieldCheck, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { testimonials } from '../data/mockData';
+import { api } from '../lib/api';
+
+type Testimonial = {
+    id: string;
+    name: string;
+    role: string;
+    content: string;
+    avatar: string;
+    rating: number;
+};
 
 export function Testimonials() {
+    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let cancelled = false;
+        const fetchTestimonials = async () => {
+            try {
+                const data = await api.get('/testimonials');
+                if (!cancelled) setTestimonials(data);
+            } catch (e) {
+                console.error('Failed to fetch testimonials', e);
+            } finally {
+                if (!cancelled) setIsLoading(false);
+            }
+        };
+        fetchTestimonials();
+        return () => { cancelled = true; };
+    }, []);
+
     return (
         <div className="min-h-screen bg-[var(--background)] py-24 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,7 +72,9 @@ export function Testimonials() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {testimonials.map((item, i) => (
+                    {isLoading ? (
+                        <div className="text-[var(--foreground)]/40 font-bold">Loading testimonials…</div>
+                    ) : testimonials.map((item, i) => (
                         <motion.div
                             key={item.id}
                             initial={{ opacity: 0, y: 20 }}

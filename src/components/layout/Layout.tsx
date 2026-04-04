@@ -7,14 +7,20 @@ export function Layout() {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        // Scroll to top on route change
         window.scrollTo(0, 0);
     }, [pathname]);
 
+    // Force dark / crypto theme globally
+    useEffect(() => {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+    }, []);
+
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col" style={{ background: '#020617' }}>
             <Navbar />
-            <main className="flex-grow pt-20">
+            {/* Home starts its own full-screen hero with pt-40+, other pages get pt-24 */}
+            <main className="flex-grow">
                 <Outlet />
             </main>
             <Footer />

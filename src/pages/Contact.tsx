@@ -1,14 +1,41 @@
 import { motion } from 'framer-motion';
 import { Mail, MessageSquare, MapPin } from 'lucide-react';
+import { useState } from 'react';
+import { api } from '../lib/api';
 
 export function Contact() {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [subject, setSubject] = useState('general');
+    const [message, setMessage] = useState('');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus('loading');
+        try {
+            await api.post('/contacts', {
+                name: `${firstName} ${lastName}`.trim(),
+                email,
+                message: `[${subject}] ${message}`
+            });
+            setStatus('success');
+            setFirstName('');
+            setLastName('');
+            setEmail('');
+            setMessage('');
+            setSubject('general');
+        } catch (error) {
+            setStatus('error');
+        }
+    };
+
     return (
         <div className="min-h-screen bg-[var(--background)] py-20 relative overflow-hidden transition-colors duration-300">
-            {/* Background elements */}
             <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
@@ -23,8 +50,6 @@ export function Contact() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-
-                    {/* Contact Info */}
                     <div className="lg:col-span-1 space-y-8">
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
@@ -76,33 +101,43 @@ export function Contact() {
                         </motion.div>
                     </div>
 
-                    {/* Contact Form */}
                     <div className="lg:col-span-2">
                         <motion.form
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="bg-[var(--card)] p-8 rounded-3xl border border-[var(--foreground)]/10 shadow-2xl transition-colors"
-                            onSubmit={(e) => e.preventDefault()}
+                            onSubmit={handleSubmit}
                         >
+                            {status === 'success' && (
+                                <div className="mb-6 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-500 font-medium">
+                                    Your message has been sent successfully. We will get back to you soon.
+                                </div>
+                            )}
+                            {status === 'error' && (
+                                <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 font-medium">
+                                    Failed to send message. Please try again later.
+                                </div>
+                            )}
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                 <div>
                                     <label className="block text-sm font-medium text-[var(--foreground)]/60 mb-2">First Name</label>
-                                    <input type="text" className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-[var(--foreground)]/20" placeholder="John" />
+                                    <input required value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-[var(--foreground)]/20" placeholder="John" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-[var(--foreground)]/60 mb-2">Last Name</label>
-                                    <input type="text" className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-[var(--foreground)]/20" placeholder="Doe" />
+                                    <input required value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-[var(--foreground)]/20" placeholder="Doe" />
                                 </div>
                             </div>
 
                             <div className="mb-6">
                                 <label className="block text-sm font-medium text-[var(--foreground)]/60 mb-2">Email Address</label>
-                                <input type="email" className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-[var(--foreground)]/20" placeholder="john@example.com" />
+                                <input required value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-[var(--foreground)]/20" placeholder="john@example.com" />
                             </div>
 
                             <div className="mb-6">
                                 <label className="block text-sm font-medium text-[var(--foreground)]/60 mb-2">Subject</label>
-                                <select className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all appearance-none">
+                                <select value={subject} onChange={(e) => setSubject(e.target.value)} className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all appearance-none">
                                     <option value="general">General Inquiry</option>
                                     <option value="support">Technical Support</option>
                                     <option value="billing">Billing Question</option>
@@ -112,15 +147,14 @@ export function Contact() {
 
                             <div className="mb-8">
                                 <label className="block text-sm font-medium text-[var(--foreground)]/60 mb-2">Message</label>
-                                <textarea rows={5} className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all resize-none placeholder:text-[var(--foreground)]/20" placeholder="How can we help you?"></textarea>
+                                <textarea required value={message} onChange={(e) => setMessage(e.target.value)} rows={5} className="w-full bg-[var(--background)] border border-[var(--foreground)]/10 rounded-xl px-4 py-3 text-[var(--foreground)] focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all resize-none placeholder:text-[var(--foreground)]/20" placeholder="How can we help you?"></textarea>
                             </div>
 
-                            <button className="w-full bg-gradient-to-r from-brand-500 to-blue-500 hover:from-brand-600 hover:to-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-brand-500/25 transition-all transform hover:-translate-y-0.5">
-                                Send Message
+                            <button disabled={status === 'loading'} className="w-full bg-gradient-to-r from-brand-500 to-blue-500 hover:from-brand-600 hover:to-blue-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-brand-500/25 transition-all transform hover:-translate-y-0.5 disabled:opacity-50">
+                                {status === 'loading' ? 'Sending...' : 'Send Message'}
                             </button>
                         </motion.form>
                     </div>
-
                 </div>
             </div>
         </div>

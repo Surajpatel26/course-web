@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
     PlayCircle,
@@ -12,19 +13,82 @@ import {
     Award
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { featuredCourses } from '../data/mockData';
+import { api } from '../lib/api';
+import type { Course } from '../components/ui/CourseCard';
+
+type CourseSection = {
+    id: string;
+    courseId: string;
+    title: string;
+    duration: string | null;
+    lessons: number | null;
+    sortOrder: number;
+};
 
 export function CourseDetail() {
     const { id } = useParams();
-    const course = featuredCourses.find(c => c.id === id) || featuredCourses[0];
+    const [course, setCourse] = useState<Course | null>(null);
+    const [sections, setSections] = useState<CourseSection[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const curriculum = [
-        { title: 'Introduction to the Course', duration: '15m', lessons: 3 },
-        { title: 'Foundations & Best Practices', duration: '1h 20m', lessons: 8 },
-        { title: 'Advanced Technical Implementation', duration: '2h 45m', lessons: 12 },
-        { title: 'Real World Case Studies', duration: '1h 10m', lessons: 5 },
-        { title: 'Final Project & Certification', duration: '45m', lessons: 2 },
-    ];
+    useEffect(() => {
+        let cancelled = false;
+        const fetchData = async () => {
+            if (!id) return;
+            setIsLoading(true);
+            try {
+                const [c, s] = await Promise.all([
+                    api.get(`/courses/${id}`),
+                    api.get(`/courses/${id}/sections`)
+                ]);
+                if (cancelled) return;
+                setCourse(c);
+                setSections(s);
+            } catch (e) {
+                console.error('Failed to fetch course detail', e);
+                if (!cancelled) {
+                    setCourse(null);
+                    setSections([]);
+                }
+            } finally {
+                if (!cancelled) setIsLoading(false);
+            }
+        };
+        fetchData();
+        return () => { cancelled = true; };
+    }, [id]);
+
+    const whatYouWillLearn = useMemo(() => {
+        const raw = (course as { whatYouWillLearnJson?: string | null } | null)?.whatYouWillLearnJson;
+        if (!raw) return null;
+        try {
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed.filter(Boolean) : null;
+        } catch {
+            return null;
+        }
+    }, [course]);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-[var(--background)] pt-28 transition-colors duration-300">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-[var(--foreground)]/60 font-bold">Loading course…</div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!course) {
+        return (
+            <div className="min-h-screen bg-[var(--background)] pt-28 transition-colors duration-300">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">Course not found</h1>
+                    <p className="text-[var(--foreground)]/60">This course may have been removed.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[var(--background)] pt-20 transition-colors duration-300">
@@ -49,7 +113,7 @@ export function CourseDetail() {
                                 {course.title}
                             </h1>
                             <p className="text-xl text-[var(--foreground)]/80 mb-8 max-w-xl leading-relaxed">
-                                Master the advanced patterns and performance optimizations required for modern high-scale applications.
+                                {(course as { description?: string | null } | null)?.description || 'Explore this course and its curriculum.'}
                             </p>
 
                             <div className="flex flex-wrap items-center gap-6 text-sm text-[var(--foreground)]/60 mb-10">
@@ -95,7 +159,7 @@ export function CourseDetail() {
 
                                 <div className="flex items-center justify-between mb-8">
                                     <div>
-                                        <span className="text-4xl font-extrabold text-[var(--foreground)]">${course.price}</span>
+                                        <span className="text-4xl font-extrabold text-[var(--foreground)]">${(course as { price?: number | null } | null)?.price ?? ''}</span>
                                         {course.originalPrice && (
                                             <span className="text-slate-500 line-through text-lg ml-3">${course.originalPrice}</span>
                                         )}
@@ -137,14 +201,14 @@ export function CourseDetail() {
                         <div className="mb-16">
                             <h2 className="text-2xl font-bold text-[var(--foreground)] mb-6">What you'll learn</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {[
-                                    'Advanced state management with signals and context',
-                                    'Performance profiling and bundle size optimization',
-                                    'Server-side rendering and static site generation patterns',
-                                    'Building highly accessible and accessible UI components',
-                                    'Testing strategies for complex frontend applications',
-                                    'Deployment pipelines and edge network distribution',
-                                ].map((item, i) => (
+                                {(whatYouWillLearn || [
+                                    'Advanced state management patterns',
+                                    'Performance profiling and bundle optimization',
+                                    'SSR/SSG patterns and trade-offs',
+                                    'Building accessible UI components',
+                                    'Testing strategies for complex apps',
+                                    'Deployment and distribution basics',
+                                ]).map((item: string, i: number) => (
                                     <div key={i} className="flex items-start gap-3 text-[var(--foreground)]/80">
                                         <CheckCircle2 className="w-5 h-5 text-brand-400 shrink-0 mt-0.5" />
                                         <span>{item}</span>
@@ -156,15 +220,18 @@ export function CourseDetail() {
                         <div className="mb-16">
                             <h2 className="text-2xl font-bold text-[var(--foreground)] mb-8">Course Curriculum</h2>
                             <div className="space-y-4">
-                                {curriculum.map((section, i) => (
-                                    <div key={i} className="bg-[var(--foreground)]/5 border border-[var(--foreground)]/10 rounded-2xl p-6 hover:bg-[var(--foreground)]/10 transition-colors">
+                                {sections.length === 0 ? (
+                                    <div className="text-[var(--foreground)]/40 font-medium">No sections added yet.</div>
+                                ) : (
+                                sections.map((section) => (
+                                    <div key={section.id} className="bg-[var(--foreground)]/5 border border-[var(--foreground)]/10 rounded-2xl p-6 hover:bg-[var(--foreground)]/10 transition-colors">
                                         <div className="flex items-center justify-between mb-2">
                                             <h3 className="text-lg font-bold text-[var(--foreground)]">{section.title}</h3>
-                                            <span className="text-xs text-[var(--foreground)]/40 font-bold uppercase">{section.duration}</span>
+                                            <span className="text-xs text-[var(--foreground)]/40 font-bold uppercase">{section.duration || ''}</span>
                                         </div>
-                                        <p className="text-sm text-[var(--foreground)]/60">{section.lessons} lessons included in this section</p>
+                                        <p className="text-sm text-[var(--foreground)]/60">{section.lessons ?? 0} lessons included in this section</p>
                                     </div>
-                                ))}
+                                )))}
                             </div>
                         </div>
                     </div>
@@ -173,10 +240,22 @@ export function CourseDetail() {
                         <div className="bg-[var(--foreground)]/5 border border-[var(--foreground)]/10 rounded-3xl p-8">
                             <h3 className="text-[var(--foreground)] font-bold mb-6">Course Stats</h3>
                             <div className="space-y-6">
-                                {[
-                                    { icon: BarChart, label: 'Level', value: 'Intermediate' },
-                                    { icon: Users, label: 'Enrolled', value: '12,450 students' },
-                                    { icon: Star, label: 'Rating', value: '4.9 / 5.0' },
+                                    {[
+                                    {
+                                        icon: BarChart,
+                                        label: 'Level',
+                                        value: (course as { level?: string | null } | null)?.level || '—',
+                                    },
+                                    {
+                                        icon: Users,
+                                        label: 'Enrolled',
+                                        value: `${(course as { students?: number | null } | null)?.students?.toLocaleString?.() ?? course.students ?? '—'} students`,
+                                    },
+                                    {
+                                        icon: Star,
+                                        label: 'Rating',
+                                        value: `${(course as { rating?: number | null } | null)?.rating ?? course.rating ?? '—'} / 5.0`,
+                                    },
                                 ].map((stat, i) => (
                                     <div key={i} className="flex items-center justify-between">
                                         <div className="flex items-center gap-3 text-[var(--foreground)]/60">

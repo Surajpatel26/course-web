@@ -1,8 +1,29 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { WebinarCard } from '../components/ui/WebinarCard';
-import { upcomingWebinars } from '../data/mockData';
+import type { Webinar } from '../components/ui/WebinarCard';
+import { api } from '../lib/api';
 
 export function Webinars() {
+    const [webinars, setWebinars] = useState<Webinar[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let cancelled = false;
+        const fetchWebinars = async () => {
+            try {
+                const data = await api.get('/webinars');
+                if (!cancelled) setWebinars(data);
+            } catch (e) {
+                console.error('Failed to fetch webinars', e);
+            } finally {
+                if (!cancelled) setIsLoading(false);
+            }
+        };
+        fetchWebinars();
+        return () => { cancelled = true; };
+    }, []);
+
     return (
         <div className="min-h-screen bg-[var(--background)] py-12 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,7 +44,9 @@ export function Webinars() {
 
                 {/* Webinar List */}
                 <div className="grid grid-cols-1 gap-8 max-w-4xl">
-                    {[...upcomingWebinars, ...upcomingWebinars].map((webinar, i) => (
+                    {isLoading ? (
+                        <div className="text-[var(--foreground)]/40 font-bold">Loading webinars…</div>
+                    ) : webinars.map((webinar, i) => (
                         <motion.div
                             key={`${webinar.id}-${i}`}
                             initial={{ opacity: 0, x: -20 }}

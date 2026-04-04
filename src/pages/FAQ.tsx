@@ -1,10 +1,31 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
-import { faqs } from '../data/mockData';
+import { useEffect } from 'react';
+import { api } from '../lib/api';
+
+type FAQItem = { id: string; question: string; answer: string };
 
 export function FAQ() {
     const [openId, setOpenId] = useState<string | null>(null);
+    const [faqs, setFaqs] = useState<FAQItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let cancelled = false;
+        const fetchFaqs = async () => {
+            try {
+                const data = await api.get('/faqs');
+                if (!cancelled) setFaqs(data);
+            } catch (e) {
+                console.error('Failed to fetch faqs', e);
+            } finally {
+                if (!cancelled) setIsLoading(false);
+            }
+        };
+        fetchFaqs();
+        return () => { cancelled = true; };
+    }, []);
 
     return (
         <div className="min-h-screen bg-[var(--background)] py-24 transition-colors duration-300">
@@ -31,7 +52,9 @@ export function FAQ() {
                 </div>
 
                 <div className="space-y-4">
-                    {faqs.map((faq, i) => (
+                    {isLoading ? (
+                        <div className="text-[var(--foreground)]/40 font-bold">Loading FAQs…</div>
+                    ) : faqs.map((faq, i) => (
                         <motion.div
                             key={faq.id}
                             initial={{ opacity: 0, y: 10 }}

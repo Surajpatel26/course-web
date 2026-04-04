@@ -2,17 +2,30 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight, ShieldCheck } from 'lucide-react';
+import { api } from '../lib/api';
 
 export function Register() {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Mock registration
-        navigate('/dashboard');
+        setError(null);
+        setIsSubmitting(true);
+        try {
+            const data = await api.post('/auth/register', { email, password, name });
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            navigate('/dashboard');
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Registration failed');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -40,6 +53,11 @@ export function Register() {
 
                 <div className="bg-[var(--card)]/80 backdrop-blur-2xl border border-[var(--foreground)]/10 rounded-3xl p-8 shadow-2xl transition-colors">
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        {error && (
+                            <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-sm rounded-xl px-4 py-3">
+                                {error}
+                            </div>
+                        )}
                         <div>
                             <label className="block text-sm font-medium text-[var(--foreground)]/60 mb-2">Full Name</label>
                             <div className="relative">
@@ -90,8 +108,8 @@ export function Register() {
                             <span>I agree to the <a href="#" className="text-brand-400 hover:underline">Terms</a> and <a href="#" className="text-brand-400 hover:underline">Privacy Policy</a></span>
                         </div>
 
-                        <button className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-brand-500/25 flex items-center justify-center gap-2 group">
-                            Create Account
+                        <button disabled={isSubmitting} className="w-full bg-brand-500 hover:bg-brand-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-brand-500/25 flex items-center justify-center gap-2 group">
+                            {isSubmitting ? 'Creating…' : 'Create Account'}
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
                     </form>

@@ -1,80 +1,164 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, Github, Twitter, Linkedin, Mail } from 'lucide-react';
+import { Zap, Twitter, Linkedin, Github, Mail, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const cols = [
+    {
+        head: 'Explore',
+        links: [
+            { label: 'All Courses',     to: '/courses' },
+            { label: 'Webinars',        to: '/webinars' },
+            { label: 'Blog',            to: '/blog' },
+            { label: 'Testimonials',    to: '/testimonials' },
+            { label: 'About Us',        to: '/about' },
+        ],
+    },
+    {
+        head: 'Platform',
+        links: [
+            { label: 'Student Portal',  to: '/login' },
+            { label: 'Dashboard',       to: '/dashboard' },
+            { label: 'Register',        to: '/register' },
+            { label: 'FAQ',             to: '/faq' },
+            { label: 'Book Demo',       to: '/book-demo' },
+        ],
+    },
+    {
+        head: 'Legal',
+        links: [
+            { label: 'Terms of Service',to: '#' },
+            { label: 'Privacy Policy',  to: '#' },
+            { label: 'Cookie Policy',   to: '#' },
+        ],
+    },
+];
+
+const socials = [
+    { icon: Twitter,  href: '#', label: 'Twitter' },
+    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+    { icon: Github,   href: '#', label: 'GitHub' },
+];
 
 export function Footer() {
     return (
-        <footer className="bg-[var(--background)] border-t border-[var(--glass-border)] pt-16 pb-8 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <footer
+            className="relative overflow-hidden pt-20 pb-8"
+            style={{
+                background: '#020617',
+                borderTop: '1px solid rgba(6,182,212,0.08)',
+            }}
+        >
+            {/* Ambient glow */}
+            <div
+                className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
+                style={{
+                    background: 'radial-gradient(ellipse, rgba(6,182,212,0.05) 0%, transparent 70%)',
+                    filter: 'blur(40px)',
+                }}
+            />
+            {/* Top neon line */}
+            <div
+                className="absolute top-0 left-0 right-0 h-px"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.4), rgba(168,85,247,0.4), transparent)' }}
+            />
 
-                    <div className="space-y-4">
-                        <Link to="/" className="flex items-center gap-2 group">
-                            <div className="bg-gradient-to-br from-brand-400 to-blue-500 p-2 rounded-xl">
-                                <BookOpen className="w-6 h-6 text-white" />
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+
+                    {/* Brand col */}
+                    <div className="lg:col-span-2 space-y-6">
+                        <Link to="/" className="flex items-center gap-3 group w-fit">
+                            <div
+                                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                                style={{
+                                    background: 'linear-gradient(135deg, #06b6d4, #6366f1, #a855f7)',
+                                    boxShadow: '0 0 20px rgba(6,182,212,0.35)',
+                                }}>
+                                <Zap className="w-5 h-5 text-white" />
                             </div>
-                            <span className="font-display font-bold text-2xl tracking-tight text-[var(--foreground)]">
-                                Course<span className="text-brand-500">Pro</span>
+                            <span className="font-display font-black text-2xl tracking-tighter text-white uppercase italic">
+                                Course<span style={{ color: '#06b6d4' }}>Pro</span>
                             </span>
                         </Link>
-                        <p className="text-[var(--foreground)]/60 text-sm leading-relaxed max-w-xs">
-                            Empowering learners worldwide with premium courses and interactive webinars. Start your journey today.
+
+                        <p className="text-white/35 text-sm leading-relaxed max-w-xs font-medium">
+                            Empowering visionaries worldwide with premium courses, elite mentors, and a professional-grade learning ecosystem.
                         </p>
-                        <div className="flex items-center gap-4 pt-2">
-                            <a href="#" className="w-10 h-10 rounded-full bg-[var(--foreground)]/5 flex items-center justify-center text-[var(--foreground)]/40 hover:bg-brand-500 hover:text-white transition-colors">
-                                <Twitter className="w-5 h-5" />
-                            </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-[var(--foreground)]/5 flex items-center justify-center text-[var(--foreground)]/40 hover:bg-brand-500 hover:text-white transition-colors">
-                                <Linkedin className="w-5 h-5" />
-                            </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-[var(--foreground)]/5 flex items-center justify-center text-[var(--foreground)]/40 hover:bg-brand-500 hover:text-white transition-colors">
-                                <Github className="w-5 h-5" />
-                            </a>
-                        </div>
-                    </div>
 
-                    <div>
-                        <h3 className="text-[var(--foreground)] font-semibold mb-6">Explore</h3>
-                        <ul className="space-y-4">
-                            <li><Link to="/courses" className="text-[var(--foreground)]/60 hover:text-brand-500 transition-colors">All Courses</Link></li>
-                            <li><Link to="/webinars" className="text-[var(--foreground)]/60 hover:text-brand-500 transition-colors">Live Webinars</Link></li>
-                            <li><Link to="/blog" className="text-[var(--foreground)]/60 hover:text-brand-500 transition-colors">Blog</Link></li>
-                            <li><Link to="/faq" className="text-[var(--foreground)]/60 hover:text-brand-500 transition-colors">FAQ</Link></li>
-                            <li><Link to="/about" className="text-[var(--foreground)]/60 hover:text-brand-500 transition-colors">About Us</Link></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-[var(--foreground)] font-semibold mb-6">Legal</h3>
-                        <ul className="space-y-4">
-                            <li><a href="#" className="text-[var(--foreground)]/60 hover:text-brand-500 transition-colors">Terms of Service</a></li>
-                            <li><a href="#" className="text-[var(--foreground)]/60 hover:text-brand-500 transition-colors">Privacy Policy</a></li>
-                            <li><a href="#" className="text-[var(--foreground)]/60 hover:text-brand-500 transition-colors">Cookie Policy</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="text-[var(--foreground)] font-semibold mb-6">Newsletter</h3>
-                        <p className="text-[var(--foreground)]/60 text-sm mb-4">Subscribe to get the latest updates on courses and webinars.</p>
-                        <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
+                        {/* Newsletter */}
+                        <form
+                            onSubmit={e => e.preventDefault()}
+                            className="flex gap-2 max-w-sm">
                             <input
                                 type="email"
                                 placeholder="Enter your email"
-                                className="bg-[var(--foreground)]/5 border border-[var(--foreground)]/10 rounded-lg px-4 py-2 text-[var(--foreground)] text-sm w-full focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all"
+                                className="flex-1 px-4 py-3 rounded-xl text-white text-sm font-medium placeholder:text-white/20 focus:outline-none transition-all"
+                                style={{
+                                    background: 'rgba(6,182,212,0.05)',
+                                    border: '1px solid rgba(6,182,212,0.15)',
+                                }}
+                                onFocus={e => (e.currentTarget.style.borderColor = 'rgba(6,182,212,0.5)')}
+                                onBlur={e => (e.currentTarget.style.borderColor = 'rgba(6,182,212,0.15)')}
                             />
-                            <button className="bg-brand-500 hover:bg-brand-600 text-white rounded-lg px-4 py-2 transition-colors flex items-center justify-center">
-                                <Mail className="w-5 h-5" />
+                            <button
+                                type="submit"
+                                className="px-4 py-3 rounded-xl text-white transition-all"
+                                style={{
+                                    background: 'linear-gradient(135deg, #06b6d4, #6366f1)',
+                                    boxShadow: '0 0 15px rgba(6,182,212,0.3)',
+                                }}>
+                                <ArrowRight className="w-5 h-5" />
                             </button>
                         </form>
+
+                        {/* Socials */}
+                        <div className="flex gap-3">
+                            {socials.map(({ icon: Icon, href, label }) => (
+                                <motion.a
+                                    key={label}
+                                    href={href}
+                                    aria-label={label}
+                                    whileHover={{ y: -2 }}
+                                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white/30 hover:text-white transition-colors"
+                                    style={{ border: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.03)' }}>
+                                    <Icon className="w-4 h-4" />
+                                </motion.a>
+                            ))}
+                        </div>
                     </div>
 
+                    {/* Link columns */}
+                    {cols.map(col => (
+                        <div key={col.head}>
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.35em] mb-5"
+                                style={{ color: '#06b6d4' }}>
+                                {col.head}
+                            </h4>
+                            <ul className="space-y-3">
+                                {col.links.map(({ label, to }) => (
+                                    <li key={label}>
+                                        <Link
+                                            to={to}
+                                            className="text-sm font-medium text-white/30 hover:text-white transition-colors">
+                                            {label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
                 </div>
 
-                <div className="pt-8 border-t border-[var(--foreground)]/5 text-center flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-[var(--foreground)]/40 text-sm">
-                        © {new Date().getFullYear()} CoursePro Inc. All rights reserved.
-                    </p>
-                    <div className="flex gap-6 text-sm text-[var(--foreground)]/40">
-                        <span>Made with React & Tailwind</span>
+                {/* Bottom bar */}
+                <div
+                    className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-white/20 text-xs font-medium"
+                    style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+                    <span>© {new Date().getFullYear()} CoursePro Inc. All rights reserved.</span>
+                    <div className="flex items-center gap-2">
+                        <span>Built with</span>
+                        <span style={{ color: '#06b6d4' }}>React</span>
+                        <span>&</span>
+                        <span style={{ color: '#a855f7' }}>Tailwind</span>
                     </div>
                 </div>
             </div>

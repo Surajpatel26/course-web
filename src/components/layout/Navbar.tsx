@@ -1,126 +1,174 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, BookOpen } from 'lucide-react';
+import { Menu, X, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { ThemeToggle } from '../ui/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Courses', path: '/courses' },
-    { name: 'Webinars', path: '/webinars' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'FAQ', path: '/faq' },
-    { name: 'About Us', path: '/about' },
-    { name: 'Contact Us', path: '/contact' },
+    { name: 'Home',        path: '/' },
+    { name: 'Courses',     path: '/courses' },
+    { name: 'Testimonials',path: '/testimonials' },
+    { name: 'Blog',        path: '/blog' },
+    { name: 'FAQ',         path: '/faq' },
+    { name: 'About',       path: '/about' },
+    { name: 'Contact',     path: '/contact' },
 ];
 
 export function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen]   = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const onScroll = () => setScrolled(window.scrollY > 30);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
+
+    // close mobile menu on route change
+    useEffect(() => { setIsOpen(false); }, [location.pathname]);
+
+    const isActive = (path: string) =>
+        location.pathname === path;
 
     return (
         <header
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? 'bg-[var(--background)]/80 backdrop-blur-md border-b border-[var(--glass-border)] shadow-lg'
-                : 'bg-transparent'
-                }`}
+            className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+                scrolled
+                    ? 'py-3'
+                    : 'py-6'
+            }`}
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-20">
-                    <Link to="/" className="flex items-center gap-2 group">
-                        <div className="bg-gradient-to-br from-brand-400 to-blue-500 p-2 rounded-xl group-hover:scale-105 transition-transform">
-                            <BookOpen className="w-6 h-6 text-white" />
+            {/* Backdrop bar */}
+            <div
+                className={`absolute inset-0 transition-all duration-500 ${
+                    scrolled
+                        ? 'opacity-100'
+                        : 'opacity-0'
+                }`}
+                style={{
+                    background: 'rgba(2, 6, 23, 0.88)',
+                    backdropFilter: 'blur(24px)',
+                    WebkitBackdropFilter: 'blur(24px)',
+                    borderBottom: '1px solid rgba(6,182,212,0.1)',
+                    boxShadow: '0 4px 40px rgba(0,0,0,0.4)',
+                }}
+            />
+
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-14">
+
+                    {/* ── Logo ── */}
+                    <Link to="/" className="flex items-center gap-3 group">
+                        <div className="relative w-9 h-9 flex items-center justify-center rounded-xl"
+                            style={{
+                                background: 'linear-gradient(135deg, #06b6d4, #6366f1, #a855f7)',
+                                boxShadow: '0 0 20px rgba(6,182,212,0.4)',
+                            }}>
+                            <Zap className="w-5 h-5 text-white" />
+                            <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                                style={{ background: 'rgba(6,182,212,0.2)' }} />
                         </div>
-                        <span className="font-display font-bold text-2xl tracking-tight text-[var(--foreground)]">
-                            Course<span className="text-brand-500">Pro</span>
+                        <span className="font-display font-black text-xl tracking-tighter text-white uppercase italic">
+                            Course<span style={{ color: '#06b6d4' }}>Pro</span>
                         </span>
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <nav className="hidden md:flex items-center gap-8">
-                        {navLinks.map((link) => (
+                    {/* ── Desktop nav ── */}
+                    <nav className="hidden lg:flex items-center gap-8">
+                        {navLinks.map(link => (
                             <Link
                                 key={link.name}
                                 to={link.path}
-                                className={`text-sm font-medium transition-colors hover:text-brand-500 ${location.pathname === link.path ? 'text-brand-500' : 'text-[var(--foreground)]/70 hover:text-[var(--foreground)]'
-                                    }`}
+                                className="relative text-[10px] font-black uppercase tracking-[0.3em] transition-colors duration-300"
+                                style={{ color: isActive(link.path) ? '#06b6d4' : 'rgba(248,250,252,0.35)' }}
+                                onMouseEnter={e => { if (!isActive(link.path)) (e.currentTarget as HTMLElement).style.color = '#f8fafc'; }}
+                                onMouseLeave={e => { if (!isActive(link.path)) (e.currentTarget as HTMLElement).style.color = 'rgba(248,250,252,0.35)'; }}
                             >
                                 {link.name}
+                                {isActive(link.path) && (
+                                    <motion.span
+                                        layoutId="nav-indicator"
+                                        className="absolute -bottom-1 left-0 right-0 h-px"
+                                        style={{ background: 'linear-gradient(90deg, transparent, #06b6d4, transparent)' }}
+                                    />
+                                )}
                             </Link>
                         ))}
-                        <Link
-                            to="/book-demo"
-                            className="px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-500 to-blue-500 text-white font-medium hover:shadow-lg hover:shadow-brand-500/25 transition-all transform hover:-translate-y-0.5"
-                        >
-                            Book a Demo
-                        </Link>
                     </nav>
 
+                    {/* ── Desktop actions ── */}
                     <div className="hidden lg:flex items-center gap-4">
-                        <ThemeToggle />
-                        <Link to="/login" className="text-[var(--foreground)]/70 hover:text-[var(--foreground)] font-medium transition-colors">
-                            Log in
+                        <Link to="/login"
+                            className="text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white/80 transition-colors">
+                            Portal
                         </Link>
-                        <Link to="/register" className="px-6 py-2.5 rounded-full bg-gradient-to-r from-brand-500 to-blue-500 text-white font-bold shadow-lg hover:shadow-brand-500/25 transition-all transform hover:-translate-y-0.5 text-sm">
-                            Sign Up
+                        <Link to="/register"
+                            className="relative px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider text-white overflow-hidden"
+                            style={{
+                                background: 'linear-gradient(135deg, #06b6d4, #6366f1)',
+                                boxShadow: '0 0 20px rgba(6,182,212,0.3)',
+                            }}>
+                            Enroll Now
                         </Link>
                     </div>
 
-                    {/* Mobile Menu Actions */}
-                    <div className="flex items-center gap-4 lg:hidden">
-                        <ThemeToggle />
-                        <button
-                            className="text-[var(--foreground)]/70 hover:text-[var(--foreground)]"
-                            onClick={() => setIsOpen(!isOpen)}
-                        >
-                            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                        </button>
-                    </div>
+                    {/* ── Mobile toggle ── */}
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white transition-colors"
+                        style={{ border: '1px solid rgba(6,182,212,0.15)', background: 'rgba(6,182,212,0.05)' }}>
+                        {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                    </button>
                 </div>
             </div>
 
-            {/* Mobile Navigation */}
+            {/* ── Mobile menu ── */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-dark/95 backdrop-blur-xl border-b border-white/10"
-                    >
-                        <div className="px-4 pt-2 pb-6 space-y-4 flex flex-col">
-                            {navLinks.map((link) => (
-                                <Link
+                        initial={{ opacity: 0, y: -16, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -16, scale: 0.98 }}
+                        transition={{ duration: 0.2 }}
+                        className="lg:hidden fixed inset-x-4 top-24 rounded-2xl overflow-hidden z-50"
+                        style={{
+                            background: 'rgba(2, 6, 23, 0.96)',
+                            border: '1px solid rgba(6,182,212,0.15)',
+                            backdropFilter: 'blur(40px)',
+                            boxShadow: '0 20px 80px rgba(0,0,0,0.6), 0 0 40px rgba(6,182,212,0.08)',
+                        }}>
+                        {/* Top neon line */}
+                        <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent, #06b6d4, #a855f7, transparent)' }} />
+
+                        <div className="p-6 space-y-1">
+                            {navLinks.map((link, i) => (
+                                <motion.div
                                     key={link.name}
-                                    to={link.path}
-                                    onClick={() => setIsOpen(false)}
-                                    className={`block px-3 py-2 text-base font-medium rounded-md ${location.pathname === link.path
-                                        ? 'bg-brand-500/10 text-brand-500'
-                                        : 'text-[var(--foreground)]/70 hover:bg-[var(--foreground)]/5 hover:text-[var(--foreground)]'
-                                        }`}
-                                >
-                                    {link.name}
-                                </Link>
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: i * 0.04 }}>
+                                    <Link
+                                        to={link.path}
+                                        className="block py-3 px-4 rounded-xl font-display font-black text-lg tracking-tight uppercase italic transition-all"
+                                        style={{
+                                            color: isActive(link.path) ? '#06b6d4' : 'rgba(248,250,252,0.4)',
+                                            background: isActive(link.path) ? 'rgba(6,182,212,0.08)' : 'transparent',
+                                        }}>
+                                        {link.name}
+                                    </Link>
+                                </motion.div>
                             ))}
-                            <Link
-                                to="/book-demo"
-                                onClick={() => setIsOpen(false)}
-                                className="mx-3 mt-4 block text-center px-5 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-blue-500 text-white font-medium shadow-lg"
-                            >
-                                Book a Demo
-                            </Link>
-                            <div className="pt-4 flex flex-col gap-3">
-                                <Link to="/login" onClick={() => setIsOpen(false)} className="w-full text-center py-3 text-white font-medium">Log in</Link>
-                                <Link to="/register" onClick={() => setIsOpen(false)} className="w-full text-center py-3 bg-gradient-to-r from-brand-500 to-blue-500 rounded-xl text-white font-bold">Sign Up</Link>
+
+                            <div className="pt-4 mt-4 space-y-3" style={{ borderTop: '1px solid rgba(6,182,212,0.08)' }}>
+                                <Link to="/login"
+                                    className="block w-full text-center py-3 rounded-xl text-white/40 font-black text-xs uppercase tracking-widest">
+                                    Student Portal
+                                </Link>
+                                <Link to="/register"
+                                    className="block w-full text-center py-4 rounded-xl text-white font-black text-sm uppercase tracking-wider"
+                                    style={{ background: 'linear-gradient(135deg, #06b6d4, #6366f1, #a855f7)', boxShadow: '0 0 30px rgba(6,182,212,0.25)' }}>
+                                    Join The Circle
+                                </Link>
                             </div>
                         </div>
                     </motion.div>

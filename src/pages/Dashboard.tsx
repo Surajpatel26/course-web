@@ -139,7 +139,7 @@ export function Dashboard() {
                                 <p className="text-xs text-[var(--foreground)]/40 mb-4">{event.time}</p>
                                 <div className="flex items-center gap-2 mb-4">
                                     <div className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-500 flex items-center justify-center text-[10px] font-bold">
-                                        {event.speaker.charAt(0)}
+                                        {event.speaker?.charAt(0) || '?'}
                                     </div>
                                     <span className="text-xs text-[var(--foreground)]/60">{event.speaker}</span>
                                 </div>
