@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Zap, Twitter, Linkedin, Github, Mail, ArrowRight } from 'lucide-react';
+import { Zap, Twitter, Linkedin, Github, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const cols = [

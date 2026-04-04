@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, ArrowLeft, User, Hash } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Hash } from 'lucide-react';
 import { api } from '../lib/api';
 
 type BlogPost = {

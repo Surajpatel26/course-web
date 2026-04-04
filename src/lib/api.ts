@@ -5,7 +5,7 @@ function getToken() {
 }
 
 export const api = {
-    async get<T>(endpoint: string): Promise<T> {
+    async get<T = any>(endpoint: string): Promise<T> {
         const response = await fetch(`${API_URL}${endpoint}`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export const api = {
         return response.json() as Promise<T>;
     },
 
-    async post<T>(endpoint: string, body: unknown): Promise<T> {
+    async post<T = any>(endpoint: string, body: any): Promise<T> {
         const response = await fetch(`${API_URL}${endpoint}`, {
             method: 'POST',
             headers: {
@@ -35,7 +35,7 @@ export const api = {
         return data as T;
     },
 
-    async put<T>(endpoint: string, body: unknown): Promise<T> {
+    async put<T = any>(endpoint: string, body: any): Promise<T> {
         const response = await fetch(`${API_URL}${endpoint}`, {
             method: 'PUT',
             headers: {
@@ -52,7 +52,7 @@ export const api = {
         return data as T;
     },
 
-    async del(endpoint: string): Promise<unknown> {
+    async del(endpoint: string): Promise<any> {
         const response = await fetch(`${API_URL}${endpoint}`, {
             method: 'DELETE',
             headers: {
