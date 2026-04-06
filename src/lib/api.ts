@@ -1,4 +1,4 @@
-const API_URL = 'https://course-backend-u9xp.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 function getToken() {
     return localStorage.getItem('token');

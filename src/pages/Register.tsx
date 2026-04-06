@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight, ShieldCheck } from 'lucide-react';
 import { api } from '../lib/api';
+import { GoogleLogin } from '@react-oauth/google';
 
 export function Register() {
     const navigate = useNavigate();
@@ -23,6 +24,22 @@ export function Register() {
             navigate('/dashboard');
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Registration failed');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credential: string | undefined) => {
+        if (!credential) return;
+        setError(null);
+        setIsSubmitting(true);
+        try {
+            const data = await api.post('/auth/google', { token: credential });
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            navigate('/dashboard');
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Google login failed');
         } finally {
             setIsSubmitting(false);
         }
@@ -113,6 +130,29 @@ export function Register() {
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
                     </form>
+
+                    <div className="mt-8">
+                        <div className="relative mb-8">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-[var(--foreground)]/10"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-4 bg-[var(--card)] text-[var(--foreground)]/40 transition-colors">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-center">
+                            <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    handleGoogleSuccess(credentialResponse.credential);
+                                }}
+                                onError={() => {
+                                    setError('Google Sign-up Failed');
+                                }}
+                                useOneTap
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <p className="mt-8 text-center text-[var(--foreground)]/60 transition-colors">

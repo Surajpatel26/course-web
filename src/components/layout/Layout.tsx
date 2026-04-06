@@ -16,14 +16,19 @@ export function Layout() {
         document.documentElement.classList.add('dark');
     }, []);
 
+    const isDashboard = pathname === '/dashboard';
+
     return (
         <div className="min-h-screen flex flex-col" style={{ background: '#020617' }}>
-            <Navbar />
-            {/* Home starts its own full-screen hero with pt-40+, other pages get pt-24 */}
-            <main className="flex-grow">
+            {!isDashboard && <Navbar />}
+            {/* 
+               Non-dashboard pages need padding for the fixed navbar 
+               unless it's the home page (which has its own hero spacing) 
+            */}
+            <main className={`flex-grow ${!isDashboard && pathname !== '/' ? 'pt-24' : ''}`}>
                 <Outlet />
             </main>
-            <Footer />
+            {!isDashboard && <Footer />}
         </div>
     );
 }

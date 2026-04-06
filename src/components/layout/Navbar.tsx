@@ -13,9 +13,10 @@ const navLinks = [
     { name: 'Contact',     path: '/contact' },
 ];
 
-export function Navbar() {
+    export function Navbar() {
     const [isOpen, setIsOpen]   = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [user, setUser] = useState<any>(null);
     const location = useLocation();
 
     useEffect(() => {
@@ -25,7 +26,15 @@ export function Navbar() {
     }, []);
 
     // close mobile menu on route change
-    useEffect(() => { setIsOpen(false); }, [location.pathname]);
+    useEffect(() => { 
+        setIsOpen(false); 
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        } else {
+            setUser(null);
+        }
+    }, [location.pathname]);
 
     const isActive = (path: string) =>
         location.pathname === path;
@@ -98,18 +107,37 @@ export function Navbar() {
 
                     {/* ── Desktop actions ── */}
                     <div className="hidden lg:flex items-center gap-4">
-                        <Link to="/login"
-                            className="text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white/80 transition-colors">
-                            Portal
-                        </Link>
-                        <Link to="/register"
-                            className="relative px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider text-white overflow-hidden"
-                            style={{
-                                background: 'linear-gradient(135deg, #06b6d4, #6366f1)',
-                                boxShadow: '0 0 20px rgba(6,182,212,0.3)',
-                            }}>
-                            Enroll Now
-                        </Link>
+                        {user ? (
+                            <Link to="/dashboard" className="flex items-center gap-4 group">
+                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 group-hover:text-brand-400 transition-colors">
+                                    {user.name}
+                                </span>
+                                <div className="relative">
+                                    <img 
+                                        src={user.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"} 
+                                        className="w-10 h-10 rounded-xl object-cover border border-white/10 group-hover:border-brand-500/50 transition-all"
+                                        alt="" 
+                                        referrerPolicy="no-referrer"
+                                    />
+                                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-brand-500 rounded-full border-2 border-[#020617] shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
+                                </div>
+                            </Link>
+                        ) : (
+                            <>
+                                <Link to="/login"
+                                    className="text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white/80 transition-colors">
+                                    Portal
+                                </Link>
+                                <Link to="/register"
+                                    className="relative px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider text-white overflow-hidden"
+                                    style={{
+                                        background: 'linear-gradient(135deg, #06b6d4, #6366f1)',
+                                        boxShadow: '0 0 20px rgba(6,182,212,0.3)',
+                                    }}>
+                                    Enroll Now
+                                </Link>
+                            </>
+                        )}
                     </div>
 
                     {/* ── Mobile toggle ── */}
@@ -160,15 +188,39 @@ export function Navbar() {
                             ))}
 
                             <div className="pt-4 mt-4 space-y-3" style={{ borderTop: '1px solid rgba(6,182,212,0.08)' }}>
-                                <Link to="/login"
-                                    className="block w-full text-center py-3 rounded-xl text-white/40 font-black text-xs uppercase tracking-widest">
-                                    Student Portal
-                                </Link>
-                                <Link to="/register"
-                                    className="block w-full text-center py-4 rounded-xl text-white font-black text-sm uppercase tracking-wider"
-                                    style={{ background: 'linear-gradient(135deg, #06b6d4, #6366f1, #a855f7)', boxShadow: '0 0 30px rgba(6,182,212,0.25)' }}>
-                                    Join The Circle
-                                </Link>
+                                {user ? (
+                                    <div className="space-y-3">
+                                        <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                                            <img 
+                                                src={user.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"} 
+                                                className="w-12 h-12 rounded-xl object-cover"
+                                                alt="" 
+                                                referrerPolicy="no-referrer"
+                                            />
+                                            <div className="flex flex-col">
+                                                <span className="text-white font-bold">{user.name}</span>
+                                                <span className="text-white/40 text-[10px] uppercase tracking-widest">{user.role || 'Student'}</span>
+                                            </div>
+                                        </div>
+                                        <Link to="/dashboard"
+                                            className="block w-full text-center py-4 rounded-xl text-white font-black text-sm uppercase tracking-wider"
+                                            style={{ background: 'linear-gradient(135deg, #06b6d4, #6366f1, #a855f7)' }}>
+                                            Go to Dashboard
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <Link to="/login"
+                                            className="block w-full text-center py-3 rounded-xl text-white/40 font-black text-xs uppercase tracking-widest">
+                                            Student Portal
+                                        </Link>
+                                        <Link to="/register"
+                                            className="block w-full text-center py-4 rounded-xl text-white font-black text-sm uppercase tracking-wider"
+                                            style={{ background: 'linear-gradient(135deg, #06b6d4, #6366f1, #a855f7)', boxShadow: '0 0 30px rgba(6,182,212,0.25)' }}>
+                                            Join The Circle
+                                        </Link>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </motion.div>

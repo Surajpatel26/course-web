@@ -10,14 +10,35 @@ import {
     Settings,
     LogOut
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { featuredCourses } from '../data/mockData';
+import { useEffect, useState } from 'react';
 
 export function Dashboard() {
+    const navigate = useNavigate();
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        } else {
+            navigate('/login');
+        }
+    }, [navigate]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        navigate('/');
+    };
+
     const enrolledCourses = [
         { ...featuredCourses[0], progress: 65, lastAccessed: '2 hours ago' },
         { ...featuredCourses[1], progress: 20, lastAccessed: 'Yesterday' },
     ];
+
+    if (!user) return null;
 
     return (
         <div className="min-h-screen bg-[var(--background)] flex transition-colors duration-300">
@@ -52,7 +73,10 @@ export function Dashboard() {
                     ))}
                 </nav>
 
-                <button className="flex items-center gap-3 px-4 py-3 text-[var(--foreground)]/30 hover:text-red-500 transition-colors">
+                <button 
+                    onClick={handleLogout}
+                    className="flex items-center gap-3 px-4 py-3 text-[var(--foreground)]/30 hover:text-red-500 transition-colors"
+                >
                     <LogOut className="w-5 h-5" />
                     <span className="font-medium">Logout</span>
                 </button>
@@ -62,14 +86,19 @@ export function Dashboard() {
             <main className="flex-grow p-8 md:p-12 overflow-y-auto">
                 <header className="flex justify-between items-center mb-12">
                     <div>
-                        <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">Welcome back, Suraj! 👋</h1>
+                        <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">Welcome back, {user.name.split(' ')[0]}! 👋</h1>
                         <p className="text-[var(--foreground)]/40">You've completed <span className="text-brand-500 font-bold">65%</span> of your current goal.</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <button className="w-10 h-10 rounded-full bg-[var(--foreground)]/5 flex items-center justify-center text-[var(--foreground)]/40 hover:text-[var(--foreground)] transition-colors">
                             <Settings className="w-5 h-5" />
                         </button>
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" className="w-10 h-10 rounded-full ring-2 ring-brand-500/20" alt="" />
+                        <img 
+                            src={user.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"} 
+                            className="w-10 h-10 rounded-full ring-2 ring-brand-500/20 object-cover" 
+                            alt="" 
+                            referrerPolicy="no-referrer"
+                        />
                     </div>
                 </header>
 

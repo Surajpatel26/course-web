@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, ArrowRight, Github, Chrome } from 'lucide-react';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 import { api } from '../lib/api';
+import { GoogleLogin } from '@react-oauth/google';
 
 export function Login() {
     const navigate = useNavigate();
@@ -22,6 +23,22 @@ export function Login() {
             navigate('/dashboard');
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Login failed');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credential: string | undefined) => {
+        if (!credential) return;
+        setError(null);
+        setIsSubmitting(true);
+        try {
+            const data = await api.post('/auth/google', { token: credential });
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            navigate('/dashboard');
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Google login failed');
         } finally {
             setIsSubmitting(false);
         }
@@ -106,15 +123,16 @@ export function Login() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <button className="flex items-center justify-center gap-3 bg-[var(--foreground)]/5 border border-[var(--foreground)]/10 rounded-xl py-3 text-[var(--foreground)] hover:bg-[var(--foreground)]/10 transition-all">
-                                <Chrome className="w-5 h-5" />
-                                Google
-                            </button>
-                            <button className="flex items-center justify-center gap-3 bg-[var(--foreground)]/5 border border-[var(--foreground)]/10 rounded-xl py-3 text-[var(--foreground)] hover:bg-[var(--foreground)]/10 transition-all">
-                                <Github className="w-5 h-5" />
-                                GitHub
-                            </button>
+                        <div className="flex justify-center">
+                            <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    handleGoogleSuccess(credentialResponse.credential);
+                                }}
+                                onError={() => {
+                                    setError('Google Login Failed');
+                                }}
+                                useOneTap
+                            />
                         </div>
                     </div>
                 </div>
