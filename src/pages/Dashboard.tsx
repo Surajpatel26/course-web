@@ -94,9 +94,9 @@ export function Dashboard() {
                             <Settings className="w-5 h-5" />
                         </button>
                         <img 
-                            src={user.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"} 
+                            src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=06b6d4&color=fff`} 
                             className="w-10 h-10 rounded-full ring-2 ring-brand-500/20 object-cover" 
-                            alt="" 
+                            alt={user.name} 
                             referrerPolicy="no-referrer"
                         />
                     </div>

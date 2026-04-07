@@ -114,9 +114,9 @@ const navLinks = [
                                 </span>
                                 <div className="relative">
                                     <img 
-                                        src={user.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"} 
-                                        className="w-10 h-10 rounded-xl object-cover border border-white/10 group-hover:border-brand-500/50 transition-all"
-                                        alt="" 
+                                        src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=06b6d4&color=fff`} 
+                                        className="w-10 h-10 rounded-xl object-cover border border-white/10 group-hover:border-brand-500/50 transition-all font-bold"
+                                        alt={user.name} 
                                         referrerPolicy="no-referrer"
                                     />
                                     <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-brand-500 rounded-full border-2 border-[#020617] shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
@@ -192,9 +192,9 @@ const navLinks = [
                                     <div className="space-y-3">
                                         <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
                                             <img 
-                                                src={user.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80"} 
-                                                className="w-12 h-12 rounded-xl object-cover"
-                                                alt="" 
+                                                src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=06b6d4&color=fff`} 
+                                                className="w-12 h-12 rounded-xl object-cover border border-white/10"
+                                                alt={user.name} 
                                                 referrerPolicy="no-referrer"
                                             />
                                             <div className="flex flex-col">
