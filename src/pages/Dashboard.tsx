@@ -86,7 +86,7 @@ export function Dashboard() {
             <main className="flex-grow p-8 md:p-12 overflow-y-auto">
                 <header className="flex justify-between items-center mb-12">
                     <div>
-                        <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">Welcome back, {user.name.split(' ')[0]}! 👋</h1>
+                        <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">Welcome back, {user?.name?.split(' ')[0] || 'Learner'}! 👋</h1>
                         <p className="text-[var(--foreground)]/40">You've completed <span className="text-brand-500 font-bold">65%</span> of your current goal.</p>
                     </div>
                     <div className="flex items-center gap-4">
@@ -94,9 +94,9 @@ export function Dashboard() {
                             <Settings className="w-5 h-5" />
                         </button>
                         <img 
-                            src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=06b6d4&color=fff`} 
+                            src={user?.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'Student')}&background=06b6d4&color=fff`} 
                             className="w-10 h-10 rounded-full ring-2 ring-brand-500/20 object-cover" 
-                            alt={user.name} 
+                            alt={user?.name || 'User'} 
                             referrerPolicy="no-referrer"
                         />
                     </div>

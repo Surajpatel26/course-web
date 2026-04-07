@@ -107,16 +107,16 @@ const navLinks = [
 
                     {/* ── Desktop actions ── */}
                     <div className="hidden lg:flex items-center gap-4">
-                        {user ? (
+                        {user && (user.email || user.name) ? (
                             <Link to="/dashboard" className="flex items-center gap-4 group">
                                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 group-hover:text-brand-400 transition-colors">
-                                    {user.name}
+                                    {user.name || 'Student'}
                                 </span>
                                 <div className="relative">
                                     <img 
-                                        src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=06b6d4&color=fff`} 
+                                        src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'Student')}&background=06b6d4&color=fff`} 
                                         className="w-10 h-10 rounded-xl object-cover border border-white/10 group-hover:border-brand-500/50 transition-all font-bold"
-                                        alt={user.name} 
+                                        alt={user.name || 'Student'} 
                                         referrerPolicy="no-referrer"
                                     />
                                     <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-brand-500 rounded-full border-2 border-[#020617] shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
@@ -188,18 +188,18 @@ const navLinks = [
                             ))}
 
                             <div className="pt-4 mt-4 space-y-3" style={{ borderTop: '1px solid rgba(6,182,212,0.08)' }}>
-                                {user ? (
+                                {user && (user.email || user.name) ? (
                                     <div className="space-y-3">
                                         <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
                                             <img 
-                                                src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=06b6d4&color=fff`} 
+                                                src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'Student')}&background=06b6d4&color=fff`} 
                                                 className="w-12 h-12 rounded-xl object-cover border border-white/10"
-                                                alt={user.name} 
+                                                alt={user.name || 'Student'} 
                                                 referrerPolicy="no-referrer"
                                             />
                                             <div className="flex flex-col">
-                                                <span className="text-white font-bold">{user.name}</span>
-                                                <span className="text-white/40 text-[10px] uppercase tracking-widest">{user.role || 'Student'}</span>
+                                                <span className="text-white font-bold">{user.name || 'Student'}</span>
+                                                <span className="text-white/40 text-[10px] uppercase tracking-widest">{user.role || 'Learner'}</span>
                                             </div>
                                         </div>
                                         <Link to="/dashboard"
