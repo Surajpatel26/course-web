@@ -7,7 +7,7 @@ const cols = [
         head: 'Explore',
         links: [
             { label: 'All Courses',     to: '/courses' },
-            { label: 'Webinars',        to: '/webinars' },
+            { label: 'Upcoming',        to: '/upcoming-courses' },
             { label: 'Blog',            to: '/blog' },
             { label: 'Testimonials',    to: '/testimonials' },
             { label: 'About Us',        to: '/about' },
@@ -19,7 +19,6 @@ const cols = [
             { label: 'Student Portal',  to: '/login' },
             { label: 'Dashboard',       to: '/dashboard' },
             { label: 'Register',        to: '/register' },
-            { label: 'FAQ',             to: '/faq' },
             { label: 'Book Demo',       to: '/book-demo' },
         ],
     },

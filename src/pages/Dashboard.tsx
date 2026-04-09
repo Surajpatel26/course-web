@@ -55,7 +55,7 @@ export function Dashboard() {
                     {[
                         { label: 'Dashboard', icon: LayoutDashboard, active: true },
                         { label: 'My Courses', icon: BookOpen },
-                        { label: 'Webinars', icon: Video },
+                        { label: 'Upcoming', icon: Video },
                         { label: 'Certificates', icon: Trophy },
                         { label: 'Progress', icon: TrendingUp },
                         { label: 'Settings', icon: Settings },
@@ -106,7 +106,7 @@ export function Dashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                     {[
                         { label: 'Courses in Progress', value: '2', icon: BookOpen, color: 'text-blue-400' },
-                        { label: 'Webinars Attended', value: '12', icon: Video, color: 'text-purple-400' },
+                        { label: 'Upcoming Saved', value: '12', icon: Video, color: 'text-purple-400' },
                         { label: 'Hours Learned', value: '45.5h', icon: Clock, color: 'text-brand-400' },
                     ].map((stat, i) => (
                         <div key={i} className="bg-[var(--card)] border border-[var(--foreground)]/5 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
@@ -156,7 +156,7 @@ export function Dashboard() {
                         ))}
                     </div>
 
-                    {/* Upcoming Webinars */}
+                    {/* Upcoming Events */}
                     <div className="space-y-6">
                         <h2 className="text-xl font-bold text-[var(--foreground)] mb-2">Upcoming Events</h2>
                         {[

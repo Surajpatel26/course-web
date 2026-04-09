@@ -1,5 +1,5 @@
 import type { Course } from '../components/ui/CourseCard';
-import type { Webinar } from '../components/ui/WebinarCard';
+
 
 export const featuredCourses: Course[] = [
     {
@@ -107,27 +107,6 @@ export const featuredCourses: Course[] = [
     }
 ];
 
-export const upcomingWebinars: Webinar[] = [
-    {
-        id: '1',
-        title: 'The Future of Web Development in 2026',
-        speaker: 'Kent C. Dodds',
-        speakerRole: 'Frontend Engineer',
-        image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80',
-        date: 'Oct 24, 2026',
-        time: '10:00 AM PST',
-        isLive: true
-    },
-    {
-        id: '2',
-        title: 'Mastering Framer Motion Animations',
-        speaker: 'Matt Perry',
-        speakerRole: 'Creator of Framer Motion',
-        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80',
-        date: 'Nov 02, 2026',
-        time: '1:00 PM EST'
-    }
-];
 
 export interface BlogPost {
     id: string;
@@ -141,11 +120,6 @@ export interface BlogPost {
     content: string;
 }
 
-export interface FAQ {
-    id: string;
-    question: string;
-    answer: string;
-}
 
 export interface Testimonial {
     id: string;
@@ -228,28 +202,6 @@ export const blogPosts: BlogPost[] = [
     }
 ];
 
-export const faqs: FAQ[] = [
-    {
-        id: '1',
-        question: 'Do I get lifetime access to the courses?',
-        answer: 'Yes! Once you enroll in a course, you have permanent access to all the materials and future updates.'
-    },
-    {
-        id: '2',
-        question: 'Are there any certificates upon completion?',
-        answer: 'Absolutely. Every course comes with a verified digital certificate that you can share on LinkedIn or your portfolio.'
-    },
-    {
-        id: '3',
-        question: 'Can I request a refund if I\'m not satisfied?',
-        answer: 'We offer a 30-day money-back guarantee. If you\'re not happy with the content, just let us know.'
-    },
-    {
-        id: '4',
-        question: 'Are the webinars recorded?',
-        answer: 'Yes, all live webinars are recorded and uploaded to the student dashboard within 24 hours.'
-    }
-];
 
 export const testimonials: Testimonial[] = [
     {
@@ -272,7 +224,7 @@ export const testimonials: Testimonial[] = [
         id: '3',
         name: 'Marcus Thorne',
         role: 'SaaS Founder',
-        content: 'The webinars give insights you just can\'t find on YouTube. The direct access to experts is priceless.',
+        content: 'The insights and content you just can\'t find on YouTube. The direct access to experts is priceless.',
         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80',
         rating: 4
     }

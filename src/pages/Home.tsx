@@ -310,11 +310,11 @@ export function Home() {
                                         style={{ background: 'linear-gradient(135deg, #0891b2, #4f46e5)' }} />
                                 </Link>
 
-                                <Link to="/webinars"
+                                <Link to="/upcoming-courses"
                                     className="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-black text-base text-white/70 hover:text-white transition-colors"
                                     style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)' }}>
                                     <PlayCircle className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
-                                    Watch Preview
+                                    Sneak Peek
                                 </Link>
                             </motion.div>
 

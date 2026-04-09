@@ -5,11 +5,9 @@ import { SmoothScroll } from './components/layout/SmoothScroll';
 
 const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
 const Courses = lazy(() => import('./pages/Courses').then(m => ({ default: m.Courses })));
-const Webinars = lazy(() => import('./pages/Webinars').then(m => ({ default: m.Webinars })));
 const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
-const FAQ = lazy(() => import('./pages/FAQ').then(m => ({ default: m.FAQ })));
+const UpcomingCourses = lazy(() => import('./pages/UpcomingCourses').then(m => ({ default: m.UpcomingCourses })));
 const CourseDetail = lazy(() => import('./pages/CourseDetail').then(m => ({ default: m.CourseDetail })));
-const WebinarDetail = lazy(() => import('./pages/WebinarDetail').then(m => ({ default: m.WebinarDetail })));
 const Testimonials = lazy(() => import('./pages/Testimonials').then(m => ({ default: m.Testimonials })));
 const Login = lazy(() => import('./pages/Login').then(m => ({ default: m.Login })));
 const Register = lazy(() => import('./pages/Register').then(m => ({ default: m.Register })));
@@ -38,13 +36,9 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="courses" element={<Courses />} />
-              <Route path="webinars" element={<Webinars />} />
-              <Route path="blog" element={<Blog />} />
-              <Route path="blog/:id" element={<BlogDetail />} />
-              <Route path="faq" element={<FAQ />} />
+              <Route path="upcoming-courses" element={<UpcomingCourses />} />
               <Route path="testimonials" element={<Testimonials />} />
               <Route path="courses/:id" element={<CourseDetail />} />
-              <Route path="webinars/:id" element={<WebinarDetail />} />
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
               <Route path="book-demo" element={<BookDemo />} />
