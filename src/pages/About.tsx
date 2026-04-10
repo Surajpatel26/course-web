@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from 'framer-motion';
-import { Target, Award, Globe, Users, Play, X, Sparkles, GraduationCap, Heart, Zap, ExternalLink } from 'lucide-react';
+import { Play, X, Sparkles, GraduationCap, Heart, Zap, ExternalLink } from 'lucide-react';
 
 // Real assets
 import img1 from '../assets/WhatsApp Image 2024-02-07 at 4.21.06 PM.jpeg';
@@ -11,13 +11,6 @@ import img5 from '../assets/pic with students7.jpeg';
 import videoSrc from '../assets/students vedios.mp4';
 import codingAnnaLogo from '../assets/android-chrome-192x192.png';
 import cyberInfoMinesLogo from '../assets/logo.png';
-
-const stats = [
-  { label: 'Active Learners', value: '50K+', icon: Users, color: '#06b6d4', glow: 'rgba(6,182,212,0.3)' },
-  { label: 'Premium Courses', value: '200+', icon: Award, color: '#a855f7', glow: 'rgba(168,85,247,0.3)' },
-  { label: 'Countries Reached', value: '120+', icon: Globe, color: '#6366f1', glow: 'rgba(99,102,241,0.3)' },
-  { label: 'Career Transitions', value: '10K+', icon: Target, color: '#06b6d4', glow: 'rgba(6,182,212,0.3)' },
-];
 
 const values = [
   {
@@ -122,25 +115,6 @@ function TiltCard({ children, className = '', depth = 1 }: { children: React.Rea
   );
 }
 
-// ─── Animated counter ───
-function Counter({ target, suffix = '' }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const step = target / 60;
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) { setCount(target); clearInterval(timer); }
-      else setCount(Math.floor(start));
-    }, 16);
-    return () => clearInterval(timer);
-  }, [inView, target]);
-  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>;
-}
-
 export function About() {
   const [videoOpen, setVideoOpen] = useState(false);
   const heroRef = useRef(null);
@@ -149,12 +123,10 @@ export function About() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   // Section refs for stagger
-  const statsRef = useRef(null);
   const valuesRef = useRef(null);
   const galleryRef = useRef(null);
   const videoRef = useRef(null);
 
-  const statsInView = useInView(statsRef, { once: true, margin: '-80px' });
   const valuesInView = useInView(valuesRef, { once: true, margin: '-80px' });
   const galleryInView = useInView(galleryRef, { once: true, margin: '-80px' });
   const videoInView = useInView(videoRef, { once: true, margin: '-80px' });

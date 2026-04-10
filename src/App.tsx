@@ -5,7 +5,6 @@ import { SmoothScroll } from './components/layout/SmoothScroll';
 
 const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
 const Courses = lazy(() => import('./pages/Courses').then(m => ({ default: m.Courses })));
-const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
 const UpcomingCourses = lazy(() => import('./pages/UpcomingCourses').then(m => ({ default: m.UpcomingCourses })));
 const CourseDetail = lazy(() => import('./pages/CourseDetail').then(m => ({ default: m.CourseDetail })));
 const Testimonials = lazy(() => import('./pages/Testimonials').then(m => ({ default: m.Testimonials })));
@@ -15,7 +14,6 @@ const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m
 const About = lazy(() => import('./pages/About').then(m => ({ default: m.About })));
 const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Contact })));
 const BookDemo = lazy(() => import('./pages/BookDemo').then(m => ({ default: m.BookDemo })));
-const BlogDetail = lazy(() => import('./pages/BlogDetail').then(m => ({ default: m.BlogDetail })));
 
 const FallbackLoader = () => (
   <div className="flex items-center justify-center min-h-[70vh] bg-transparent">
