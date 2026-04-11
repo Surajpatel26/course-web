@@ -27,25 +27,27 @@ export function Courses() {
 
     // Get unique categories
     const categories = useMemo(() => {
-        const cats = ['All', ...new Set(courses.map(course => course.category))];
-        return cats;
+        const cats = ['All', ...new Set(courses.map(course => (course.category || 'Uncategorized').trim()))];
+        return cats.filter(Boolean);
     }, [courses]);
 
     // Filter and group courses
     const groupedCourses = useMemo(() => {
         const filtered = courses.filter(course => {
-            const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
-            const matchesCategory = activeCategory === 'All' || course.category === activeCategory;
+            const courseCat = (course.category || 'Uncategorized').trim();
+            const matchesSearch = (course.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (course.instructor || '').toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesCategory = activeCategory === 'All' || courseCat === activeCategory;
             return matchesSearch && matchesCategory;
         });
 
         const groups: Record<string, Course[]> = {};
         filtered.forEach(course => {
-            if (!groups[course.category]) {
-                groups[course.category] = [];
+            const cat = (course.category || 'Uncategorized').trim();
+            if (!groups[cat]) {
+                groups[cat] = [];
             }
-            groups[course.category].push(course);
+            groups[cat].push(course);
         });
 
         return groups;

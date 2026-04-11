@@ -169,8 +169,19 @@ export function CourseDetail() {
                                     </div>
                                 </div>
 
-                                <button className="w-full py-4 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-lg mb-4 transition-all shadow-lg hover:shadow-brand-500/25 transform hover:-translate-y-0.5">
-                                    Enroll in Course
+                                <button 
+                                    onClick={() => {
+                                        const storedUser = localStorage.getItem('user');
+                                        if (!storedUser) {
+                                            window.location.href = '/register';
+                                        } else {
+                                            // Handle enrollment logic here
+                                            alert('Thank you for enrolling! This feature is coming soon.');
+                                        }
+                                    }}
+                                    className="w-full py-4 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-lg mb-4 transition-all shadow-lg hover:shadow-brand-500/25 transform hover:-translate-y-0.5"
+                                >
+                                    {localStorage.getItem('user') ? 'Enroll in Course' : 'Enroll Now'}
                                 </button>
                                 <p className="text-center text-slate-500 text-xs mb-8">30-Day Money-Back Guarantee</p>
 

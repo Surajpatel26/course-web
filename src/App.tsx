@@ -12,6 +12,8 @@ const Login = lazy(() => import('./pages/Login').then(m => ({ default: m.Login }
 const Register = lazy(() => import('./pages/Register').then(m => ({ default: m.Register })));
 const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })));
 const About = lazy(() => import('./pages/About').then(m => ({ default: m.About })));
+const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
+const BlogDetail = lazy(() => import('./pages/BlogDetail').then(m => ({ default: m.BlogDetail })));
 const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Contact })));
 const BookDemo = lazy(() => import('./pages/BookDemo').then(m => ({ default: m.BookDemo })));
 
@@ -38,6 +40,8 @@ function App() {
               <Route path="testimonials" element={<Testimonials />} />
               <Route path="courses/:id" element={<CourseDetail />} />
               <Route path="about" element={<About />} />
+              <Route path="blog" element={<Blog />} />
+              <Route path="blog/:id" element={<BlogDetail />} />
               <Route path="contact" element={<Contact />} />
               <Route path="book-demo" element={<BookDemo />} />
               <Route path="login" element={<Login />} />
