@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { Play, X, Sparkles, GraduationCap, Heart, Zap, ExternalLink, Loader2 } from 'lucide-react';
 import { api } from '../lib/api';
 
