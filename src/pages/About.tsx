@@ -1,14 +1,15 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from 'framer-motion';
-import { Play, X, Sparkles, GraduationCap, Heart, Zap, ExternalLink } from 'lucide-react';
+import { Play, X, Sparkles, GraduationCap, Heart, Zap, ExternalLink, Loader2 } from 'lucide-react';
+import { api } from '../lib/api';
 
-// Real assets
-import img1 from '../assets/WhatsApp Image 2024-02-07 at 4.21.06 PM.jpeg';
-import img2 from '../assets/WhatsApp Image 2025-06-24 at 4.52.09 PM.jpeg';
-import img3 from '../assets/flag hoisting pic8.jpeg';
-import img4 from '../assets/pic with students18.jpeg';
-import img5 from '../assets/pic with students7.jpeg';
-import videoSrc from '../assets/students vedios.mp4';
+// Fallback assets
+import img1Fallback from '../assets/WhatsApp Image 2024-02-07 at 4.21.06 PM.jpeg';
+import img2Fallback from '../assets/WhatsApp Image 2025-06-24 at 4.52.09 PM.jpeg';
+import img3Fallback from '../assets/flag hoisting pic8.jpeg';
+import img4Fallback from '../assets/pic with students18.jpeg';
+import img5Fallback from '../assets/pic with students7.jpeg';
+import videoSrcFallback from '../assets/students vedios.mp4';
 import codingAnnaLogo from '../assets/android-chrome-192x192.png';
 import cyberInfoMinesLogo from '../assets/logo.png';
 
@@ -39,7 +40,7 @@ const values = [
   },
 ];
 
-// ─── Floating 3D particle field ───
+// ─── Floating 3D particle field ─── (keep as is)
 function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -87,7 +88,7 @@ function ParticleField() {
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-40" />;
 }
 
-// ─── Mouse-parallax tilt card wrapper ───
+// ─── Mouse-parallax tilt card wrapper ─── (keep as is)
 function TiltCard({ children, className = '', depth = 1 }: { children: React.ReactNode; className?: string; depth?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -117,6 +118,23 @@ function TiltCard({ children, className = '', depth = 1 }: { children: React.Rea
 
 export function About() {
   const [videoOpen, setVideoOpen] = useState(false);
+  const [aboutData, setAboutData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAbout() {
+      try {
+        const data = await api.get('/about');
+        setAboutData(data);
+      } catch (err) {
+        console.error('Failed to fetch about data:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAbout();
+  }, []);
+
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
@@ -127,9 +145,35 @@ export function About() {
   const galleryRef = useRef(null);
   const videoRef = useRef(null);
 
-  const valuesInView = useInView(valuesRef, { once: true, margin: '-80px' });
-  const galleryInView = useInView(galleryRef, { once: true, margin: '-80px' });
-  const videoInView = useInView(videoRef, { once: true, margin: '-80px' });
+  // Helper to get image with fallback
+  const getImg = (key: string, fallback: string) => {
+    return (aboutData && aboutData[key]) ? aboutData[key] : fallback;
+  };
+
+  const images = {
+    img1: getImg('video_thumbnail', img1Fallback),
+    img2: getImg('hero_img_main', img2Fallback),
+    img3: getImg('video_mini_1', img3Fallback),
+    img4: getImg('hero_img_bottom', img4Fallback),
+    img5: getImg('hero_img_top', img5Fallback),
+    videoSrc: getImg('video_url', videoSrcFallback),
+    gallery1: getImg('gallery_img_1', img2Fallback),
+    gallery2: getImg('gallery_img_2', img5Fallback),
+    gallery3: getImg('gallery_img_3', img3Fallback),
+    gallery4: getImg('gallery_img_4', img4Fallback),
+    gallery5: getImg('gallery_img_5', img1Fallback),
+    videoMini1: getImg('video_mini_1', img3Fallback),
+    videoMini2: getImg('video_mini_2', img5Fallback),
+    videoMini3: getImg('video_mini_3', img4Fallback),
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
+        <Loader2 className="w-10 h-10 text-cyan-500 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[var(--background)] overflow-x-hidden">
@@ -177,21 +221,12 @@ export function About() {
                 <span className="text-xs font-black uppercase tracking-widest text-cyan-400">About CoursePro</span>
               </div>
 
-              <h1 className="text-5xl md:text-6xl xl:text-7xl font-display font-black leading-[0.95] tracking-tighter mb-8">
-                Our Mission is to{' '}
-                <span className="relative">
-                  <span className="text-gradient">Democratize</span>
-                  <motion.div className="absolute -bottom-1 left-0 right-0 h-px"
-                    style={{ background: 'linear-gradient(90deg, transparent, #06b6d4, transparent)' }}
-                    animate={{ scaleX: [0, 1, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                  />
-                </span>
-                <br />Education
+              <h1 className="text-5xl md:text-6xl xl:text-7xl font-display font-black leading-[0.95] tracking-tighter mb-8 whitespace-pre-line">
+                {aboutData?.hero_title || 'Our Mission is to Democratize Education'}
               </h1>
 
               <p className="text-xl text-[var(--foreground)]/60 leading-relaxed max-w-xl mb-10">
-                We started CoursePro with a simple idea: everyone deserves access to world-class education. Today, we connect 50,000+ ambitious learners with elite industry experts across 120+ countries.
+                {aboutData?.hero_desc || 'We started CoursePro with a simple idea: everyone deserves access to world-class education. Today, we connect 50,000+ ambitious learners with elite industry experts across 120+ countries.'}
               </p>
 
               <motion.button
@@ -221,7 +256,7 @@ export function About() {
             <TiltCard className="absolute left-0 top-0 w-[70%] h-[65%]" depth={1.2}>
               <div className="relative w-full h-full rounded-3xl overflow-hidden border border-cyan-500/20 shadow-2xl"
                 style={{ boxShadow: '0 0 60px rgba(6,182,212,0.15), 0 20px 60px rgba(0,0,0,0.5)' }}>
-                <img src={img2} alt="Students learning" className="w-full h-full object-cover" />
+                <img src={images.img2} alt="Students learning" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/40 to-transparent" />
                 {/* Corner badge */}
                 <div className="absolute top-3 left-3 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-cyan-500/30 backdrop-blur-sm">
@@ -234,7 +269,7 @@ export function About() {
             <TiltCard className="absolute right-0 bottom-0 w-[60%] h-[55%]" depth={0.9}>
               <div className="relative w-full h-full rounded-3xl overflow-hidden border border-purple-500/20 shadow-2xl"
                 style={{ boxShadow: '0 0 60px rgba(168,85,247,0.15), 0 20px 60px rgba(0,0,0,0.5)' }}>
-                <img src={img4} alt="Students with instructor" className="w-full h-full object-cover" />
+                <img src={images.img4} alt="Students with instructor" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-tl from-slate-950/40 to-transparent" />
               </div>
             </TiltCard>
@@ -243,7 +278,7 @@ export function About() {
             <TiltCard className="absolute right-4 top-4 w-[32%] h-[40%]" depth={1.5}>
               <div className="relative w-full h-full rounded-2xl overflow-hidden border border-indigo-500/20 shadow-xl"
                 style={{ boxShadow: '0 0 40px rgba(99,102,241,0.2)' }}>
-                <img src={img5} alt="Students" className="w-full h-full object-cover" />
+                <img src={images.img5} alt="Students" className="w-full h-full object-cover" />
               </div>
             </TiltCard>
 
@@ -254,7 +289,7 @@ export function About() {
               className="absolute left-2 bottom-8 z-10 px-4 py-3 rounded-2xl border border-cyan-500/30 bg-glass backdrop-blur-xl"
             >
               <div className="text-[9px] font-black uppercase tracking-widest text-cyan-400/70">Active Learners</div>
-              <div className="text-2xl font-black text-cyan-400 font-mono">50K+</div>
+              <div className="text-2xl font-black text-cyan-400 font-mono">{aboutData?.stats_learners || '50K+'}</div>
             </motion.div>
 
             {/* Orbiting ring */}
@@ -288,7 +323,8 @@ export function About() {
             {/* Video thumbnail */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
-              animate={videoInView ? { opacity: 1, x: 0 } : {}}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
               <TiltCard depth={1.3}>
@@ -297,7 +333,7 @@ export function About() {
                   className="relative rounded-3xl overflow-hidden cursor-pointer group border border-indigo-500/20"
                   style={{ boxShadow: '0 0 80px rgba(99,102,241,0.2), 0 30px 80px rgba(0,0,0,0.5)' }}
                 >
-                  <img src={img1} alt="Video thumbnail" className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={images.img1} alt="Video thumbnail" className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700" />
 
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
@@ -327,7 +363,8 @@ export function About() {
             {/* Text */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
-              animate={videoInView ? { opacity: 1, x: 0 } : {}}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-8"
             >
@@ -335,22 +372,22 @@ export function About() {
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 mb-5">
                   <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400">Live Community</span>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight leading-tight mb-5">
-                  Join a thriving<br />
-                  <span className="text-gradient">global community</span>
+                <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight leading-tight mb-5 whitespace-pre-line">
+                  {aboutData?.mission_title || 'Join a thriving global community'}
                 </h2>
                 <p className="text-lg text-[var(--foreground)]/60 leading-relaxed">
-                  Learning is better together. Our platform doesn't just offer video courses — it offers a rich community experience. Participate in live Q&As, join study groups, and network with peers from around the globe.
+                  {aboutData?.mission_desc || "Learning is better together. Our platform doesn't just offer video courses — it offers a rich community experience. Participate in live Q&As, join study groups, and network with peers from around the globe."}
                 </p>
               </div>
 
               {/* Mini image row */}
               <div className="flex gap-3">
-                {[img3, img5, img4].map((src, i) => (
+                {[images.videoMini1, images.videoMini2, images.videoMini3].map((src, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
-                    animate={videoInView ? { opacity: 1, y: 0 } : {}}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-80px' }}
                     transition={{ delay: 0.4 + i * 0.1 }}
                     className="relative overflow-hidden rounded-2xl border border-white/10 flex-1 aspect-square"
                     style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}
@@ -369,7 +406,8 @@ export function About() {
                   <motion.div
                     key={m.label}
                     initial={{ opacity: 0, scale: 0.9 }}
-                    animate={videoInView ? { opacity: 1, scale: 1 } : {}}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: '-80px' }}
                     transition={{ delay: 0.6 + i * 0.1 }}
                     className="p-4 rounded-2xl bg-glass border"
                     style={{ borderColor: `${m.color}20` }}
@@ -389,7 +427,8 @@ export function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7 }}
             className="text-center mb-16"
           >
@@ -407,13 +446,14 @@ export function About() {
             <div className="space-y-5">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
-                animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.7, delay: 0 }}
               >
                 <TiltCard depth={0.7}>
                   <div className="relative overflow-hidden rounded-3xl border border-cyan-500/15 group"
                     style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
-                    <img src={img2} alt="" className="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery1} alt="" className="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <motion.div
                       className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-slate-950/80 border border-cyan-500/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -425,13 +465,14 @@ export function About() {
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
-                animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.7, delay: 0.15 }}
               >
                 <TiltCard depth={0.6}>
                   <div className="relative overflow-hidden rounded-3xl border border-purple-500/15 group"
                     style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
-                    <img src={img5} alt="" className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery2} alt="" className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </TiltCard>
@@ -442,14 +483,15 @@ export function About() {
             <div className="space-y-5">
               <motion.div
                 initial={{ opacity: 0, y: 60 }}
-                animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.7, delay: 0.1 }}
                 className="md:mt-8"
               >
                 <TiltCard depth={1}>
                   <div className="relative overflow-hidden rounded-3xl border border-indigo-500/20 group"
                     style={{ boxShadow: '0 0 60px rgba(99,102,241,0.15), 0 30px 60px rgba(0,0,0,0.5)' }}>
-                    <img src={img3} alt="" className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery3} alt="" className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent" />
                     <div className="absolute bottom-5 left-5 right-5">
                       <div className="text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-1">🏳 Community Event</div>
@@ -464,20 +506,22 @@ export function About() {
             <div className="space-y-5">
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
-                animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.7, delay: 0.05 }}
               >
                 <TiltCard depth={0.8}>
                   <div className="relative overflow-hidden rounded-3xl border border-cyan-500/15 group"
                     style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
-                    <img src={img4} alt="" className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery4} alt="" className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </TiltCard>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
-                animate={galleryInView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.7, delay: 0.2 }}
               >
                 {/* Video thumbnail card */}
@@ -487,7 +531,7 @@ export function About() {
                     className="relative overflow-hidden rounded-3xl border border-purple-500/20 cursor-pointer group"
                     style={{ boxShadow: '0 0 50px rgba(168,85,247,0.15)' }}
                   >
-                    <img src={img1} alt="" className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery5} alt="" className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-slate-950/30 flex items-center justify-center">
                       <motion.div
                         animate={{ scale: [1, 1.1, 1] }}
@@ -516,7 +560,8 @@ export function About() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={valuesInView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4">
@@ -532,7 +577,8 @@ export function About() {
               <motion.div
                 key={v.title}
                 initial={{ opacity: 0, y: 50, rotateY: 20 }}
-                animate={valuesInView ? { opacity: 1, y: 0, rotateY: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
                 <TiltCard depth={1.2}>
@@ -710,7 +756,7 @@ export function About() {
               <X className="w-5 h-5" />
             </button>
             <video
-              src={videoSrc}
+              src={images.videoSrc}
               controls
               autoPlay
               className="w-full aspect-video bg-black"
