@@ -37,13 +37,13 @@ export function Blog() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[var(--background)] py-32 transition-colors duration-500 overflow-hidden relative">
+        <div className="min-h-screen bg-[var(--background)] py-10 transition-colors duration-500 overflow-hidden relative">
             {/* Ambient Background Glows */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-500/5 rounded-full blur-[120px] -z-10" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-highlight-500/5 rounded-full blur-[120px] -z-10" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="text-left mb-24 max-w-3xl">
+                <div className="text-left mb-8 max-w-3xl">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -55,7 +55,7 @@ export function Blog() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-6xl md:text-8xl font-display font-black text-[var(--foreground)] mb-10 tracking-tighter leading-tight"
+                        className="text-5xl md:text-7xl font-display font-black text-[var(--foreground)] mb-6 tracking-tighter leading-tight"
                     >
                         Elite <span className="text-gradient italic">Narratives.</span>
                     </motion.h1>
@@ -69,7 +69,7 @@ export function Blog() {
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {isLoading ? (
                         Array.from({ length: 6 }).map((_, i) => (
                             <div key={i} className="h-[500px] rounded-[48px] bg-glass animate-pulse border border-[var(--glass-border)]" />
@@ -83,7 +83,7 @@ export function Blog() {
                                 transition={{ delay: i * 0.1, duration: 0.8 }}
                                 className="group relative flex flex-col h-full bg-glass border border-[var(--glass-border)] rounded-[48px] overflow-hidden hover:bg-[var(--foreground)]/[0.03] transition-all duration-700 shadow-premium hover:shadow-2xl hover:border-brand-500/30"
                             >
-                                <Link to={`/blog/${post.id}`} className="block h-64 overflow-hidden relative">
+                                <Link to={`/blog/${post.id}`} className="block h-36 overflow-hidden relative">
                                     <img
                                         src={post.image}
                                         alt={post.title}
@@ -97,7 +97,7 @@ export function Blog() {
                                     </div>
                                 </Link>
 
-                                <div className="p-10 flex-1 flex flex-col">
+                                <div className="p-6 flex-1 flex flex-col">
                                     <div className="flex items-center gap-6 text-[var(--foreground)]/30 text-[10px] font-black uppercase tracking-widest mb-6">
                                         <div className="flex items-center gap-2">
                                             <Calendar className="w-3.5 h-3.5" />
@@ -109,15 +109,15 @@ export function Blog() {
                                         </div>
                                     </div>
 
-                                    <h3 className="text-2xl font-display font-black text-[var(--foreground)] mb-6 tracking-tight leading-[1.2] group-hover:text-brand-500 transition-colors uppercase italic">
+                                    <h3 className="text-xl font-display font-black text-[var(--foreground)] mb-4 tracking-tight leading-[1.2] group-hover:text-brand-500 transition-colors uppercase italic line-clamp-2">
                                         {post.title}
                                     </h3>
 
-                                    <p className="text-[var(--foreground)]/40 text-lg mb-8 line-clamp-3 leading-relaxed font-medium flex-1">
+                                    <p className="text-[var(--foreground)]/40 text-sm mb-6 line-clamp-2 leading-relaxed font-medium flex-1">
                                         {post.excerpt}
                                     </p>
 
-                                    <div className="flex items-center justify-between pt-8 border-t border-[var(--glass-border)]">
+                                    <div className="flex items-center justify-between pt-6 border-t border-[var(--glass-border)]">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 rounded-2xl bg-brand-500 text-white flex items-center justify-center text-xs font-black shadow-lg">
                                                 {post.author?.charAt(0) || '?'}
@@ -141,8 +141,8 @@ export function Blog() {
                 </div>
 
                 {/* Newsletter Section - Revamped */}
-                <div className="mt-48 relative p-[1px] rounded-[64px] bg-premium-gradient overflow-hidden group">
-                    <div className="bg-glass-heavy backdrop-blur-3xl rounded-[63px] p-16 md:p-24 text-center relative z-10">
+                <div className="mt-12 relative p-[1px] rounded-[64px] bg-premium-gradient overflow-hidden group">
+                    <div className="bg-glass-heavy backdrop-blur-3xl rounded-[63px] p-10 md:p-12 text-center relative z-10">
                         <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-brand-500/10 text-brand-500 text-[10px] font-black uppercase tracking-[0.3em] mb-10 border border-brand-500/20">
                             The Inner Circle
                         </div>

@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { FloatingContact } from '../ui/FloatingContact';
 import { useEffect } from 'react';
 
 export function Layout() {
@@ -25,10 +26,13 @@ export function Layout() {
                Non-dashboard pages need padding for the fixed navbar 
                unless it's the home page (which has its own hero spacing) 
             */}
-            <main className={`flex-grow ${!isDashboard && pathname !== '/' ? 'pt-24' : ''}`}>
+            <main className={`flex-grow ${!isDashboard && pathname !== '/' ? 'pt-20' : ''}`}>
                 <Outlet />
             </main>
             {!isDashboard && <Footer />}
+            
+            {/* Floating Quick Connect Widget */}
+            {!isDashboard && <FloatingContact />}
         </div>
     );
 }

@@ -54,11 +54,11 @@ export function Courses() {
     }, [courses, searchTerm, activeCategory]);
 
     return (
-        <div className="min-h-screen bg-[var(--background)] py-20 transition-colors duration-300">
+        <div className="min-h-screen bg-[var(--background)] py-10 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header Section */}
-                <header className="mb-16">
+                <header className="mb-4">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export function Courses() {
                 </header>
 
                 {/* Main Layout containing Sidebar and Content Grid */}
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-4">
                     {/* Sidebar */}
                     <aside className="w-full lg:w-72 flex-shrink-0 space-y-6 lg:sticky lg:top-28 h-fit self-start z-20">
                         {/* Thin Search Bar */}
@@ -131,8 +131,8 @@ export function Courses() {
                     </aside>
 
                     {/* Grouped Courses Grid */}
-                    <div className="flex-grow min-w-0 pb-20">
-                        <div className="space-y-24">
+                    <div className="flex-grow min-w-0 pb-6">
+                        <div className="space-y-8">
                             <AnimatePresence mode="popLayout">
                                 {isLoading ? (
                                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-32 text-center">
@@ -149,7 +149,7 @@ export function Courses() {
                                             transition={{ delay: idx * 0.1 }}
                                             className="relative"
                                         >
-                                            <div className="flex items-center gap-4 mb-10">
+                                            <div className="flex items-center gap-4 mb-4">
                                                 <div className="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-400">
                                                     <Hash className="w-6 h-6" />
                                                 </div>
@@ -159,7 +159,7 @@ export function Courses() {
                                                 <div className="h-px flex-grow bg-gradient-to-r from-[var(--foreground)]/10 to-transparent" />
                                             </div>
 
-                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-10">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                                 {courses.map((course) => (
                                                     <motion.div
                                                         key={course.id}

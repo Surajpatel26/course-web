@@ -39,11 +39,11 @@ export function UpcomingCourses() {
     );
 
     return (
-        <div className="min-h-screen bg-[var(--background)] pt-32 pb-24">
+        <div className="min-h-screen bg-[var(--background)] pt-8 pb-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 {/* Header Sequence */}
-                <header className="mb-16">
+                <header className="mb-4">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ export function UpcomingCourses() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-display font-black text-[var(--foreground)] tracking-tighter mb-6 uppercase italic"
+                        className="text-5xl md:text-7xl font-display font-black text-[var(--foreground)] tracking-tighter mb-4 uppercase italic"
                     >
                         Upcoming <span className="text-cyan-400">Courses</span>
                     </motion.h1>
@@ -72,7 +72,7 @@ export function UpcomingCourses() {
                     </motion.p>
                 </header>
 
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-4">
                     {/* Sidebar / Search */}
                     <aside className="w-full lg:w-72 flex-shrink-0 space-y-6 lg:sticky lg:top-28 h-fit self-start z-20">
                         <div className="relative w-full">
@@ -88,8 +88,8 @@ export function UpcomingCourses() {
                     </aside>
 
                     {/* Content Grid */}
-                    <div className="flex-grow min-w-0 pb-20">
-                        <div className="space-y-12">
+                    <div className="flex-grow min-w-0 pb-6">
+                        <div className="space-y-8">
                             <AnimatePresence mode="popLayout">
                                 {isLoading ? (
                                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-32 text-center">
@@ -119,8 +119,8 @@ export function UpcomingCourses() {
                                                     </div>
                                                 </div>
 
-                                                <div className="p-8 flex flex-col flex-grow relative z-10 -mt-10">
-                                                    <div className="bg-[var(--card)]/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-[var(--foreground)]/5 flex-grow flex flex-col">
+                                                <div className="p-4 flex flex-col flex-grow relative z-10 -mt-10">
+                                                    <div className="bg-[var(--card)]/90 backdrop-blur-xl p-4 md:p-6 rounded-2xl shadow-xl border border-[var(--foreground)]/5 flex-grow flex flex-col">
                                                         <h3 className="text-2xl font-black text-[var(--foreground)] mb-3 leading-tight group-hover:text-cyan-400 transition-colors">
                                                             {course.title}
                                                         </h3>

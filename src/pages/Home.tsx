@@ -248,7 +248,7 @@ export function Home() {
                     style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(6,182,212,0.4) 50%, transparent 100%)' }} />
 
                 <motion.div style={{ y: heroY, opacity: heroOpacity }}
-                    className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-32 pt-40">
+                    className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 pt-20">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
                         {/* ── Left: Text ── */}
@@ -357,12 +357,12 @@ export function Home() {
             </section>
 
             {/* ═══════════ STATS BAR ═══════════ */}
-            <section className="relative z-20 py-2"
+            <section className="relative z-20 py-1"
                 style={{ background: 'linear-gradient(180deg, #020617 0%, #030820 100%)', borderTop: '1px solid rgba(6,182,212,0.08)' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="flex flex-wrap justify-around gap-4 py-6"
+                        className="flex flex-wrap justify-around gap-4 py-4"
                         style={{ borderRadius: 24 }}>
                         <NeonStatCard label="Active Scholars" value={10000} suffix="+" color="cyan" delay={0} />
                         <NeonStatCard label="Premium Modules" value={120} suffix="+" color="purple" delay={0.1} />
@@ -373,9 +373,9 @@ export function Home() {
             </section>
 
             {/* ═══════════ FEATURED COURSES ═══════════ */}
-            <section className="py-20" style={{ background: '#030820' }}>
+            <section className="py-8" style={{ background: '#030820' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-6">
+                    <div className="flex flex-col md:flex-row items-end justify-between mb-8 gap-6">
                         <div>
                             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                                 className="text-[10px] font-black uppercase tracking-[0.4em] mb-4"
@@ -417,7 +417,7 @@ export function Home() {
             </section>
 
             {/* ═══════════ PHILOSOPHY / MOTION GRAPHIC ═══════════ */}
-            <section className="py-20 relative overflow-hidden"
+            <section className="py-8 relative overflow-hidden"
                 style={{ background: 'linear-gradient(180deg, #030820 0%, #020617 100%)' }}>
                 {/* ambient glow */}
                 <div className="absolute inset-y-0 left-0 w-1/2 pointer-events-none"
@@ -468,9 +468,9 @@ export function Home() {
             </section>
 
             {/* ═══════════ FEATURES ═══════════ */}
-            <section className="py-20" style={{ background: '#020617' }}>
+            <section className="py-8" style={{ background: '#020617' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-20">
+                    <div className="text-center mb-8">
                         <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                             className="text-[10px] font-black uppercase tracking-[0.4em] mb-4" style={{ color: '#a855f7' }}>
                             Why Choose Us
@@ -498,13 +498,13 @@ export function Home() {
             </section>
 
             {/* ═══════════ TESTIMONIALS ═══════════ */}
-            <section className="py-20 relative overflow-hidden"
+            <section className="py-8 relative overflow-hidden"
                 style={{ background: 'linear-gradient(180deg, #020617 0%, #030820 100%)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
                 <div className="absolute inset-0 pointer-events-none"
                     style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(6,182,212,0.04) 0%, transparent 60%)' }} />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="text-center mb-20">
+                    <div className="text-center mb-8">
                         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                             className="font-display font-black tracking-tighter text-white"
                             style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
@@ -531,16 +531,16 @@ export function Home() {
             </section>
 
             {/* ═══════════ LOGO MARQUEE ═══════════ */}
-            <section className="py-20 overflow-hidden"
+            <section className="py-8 overflow-hidden"
                 style={{ background: '#020617', borderTop: '1px solid rgba(255,255,255,0.03)' }}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
                     <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white">Global Affiliations</p>
                 </div>
                 <LogoMarquee />
             </section>
 
             {/* ═══════════ FINAL CTA ═══════════ */}
-            <section className="relative py-40 overflow-hidden"
+            <section className="relative py-12 overflow-hidden"
                 style={{ background: '#030820', borderTop: '1px solid rgba(6,182,212,0.08)' }}>
                 {/* Neon background effects */}
                 <div className="absolute inset-0 pointer-events-none">

@@ -207,7 +207,7 @@ export function About() {
         />
 
         <motion.div style={{ y: heroY, opacity: heroOpacity }}
-          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
           {/* Left text */}
           <div>
@@ -306,7 +306,7 @@ export function About() {
       </section>
 
       {/* ── VIDEO SECTION ── */}
-      <section ref={videoRef} className="relative py-28 overflow-hidden">
+      <section ref={videoRef} className="relative py-8 overflow-hidden">
         {/* Massive glow */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <motion.div
@@ -423,14 +423,14 @@ export function About() {
       </section>
 
       {/* ── PHOTO GALLERY ── */}
-      <section ref={galleryRef} className="relative py-24 overflow-hidden">
+      <section ref={galleryRef} className="relative py-8 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7 }}
-            className="text-center mb-16"
+            className="text-center mb-8"
           >
             <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4">
               Life at <span className="text-gradient">CoursePro</span>
@@ -553,7 +553,7 @@ export function About() {
       </section>
 
       {/* ── VALUES ── */}
-      <section ref={valuesRef} className="relative py-28 overflow-hidden border-t border-[var(--foreground)]/5">
+      <section ref={valuesRef} className="relative py-8 overflow-hidden border-t border-[var(--foreground)]/5">
         <div className="absolute inset-0 mesh-gradient opacity-30" />
         <ParticleField />
 
@@ -562,7 +562,7 @@ export function About() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
-            className="text-center mb-16"
+            className="text-center mb-8"
           >
             <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4">
               What We <span className="text-gradient">Stand For</span>
@@ -605,7 +605,7 @@ export function About() {
       </section>
 
       {/* ── SISTER PLATFORMS ── */}
-      <section className="relative py-28 overflow-hidden border-t border-[var(--foreground)]/5">
+      <section className="relative py-8 overflow-hidden border-t border-[var(--foreground)]/5">
         <div className="absolute inset-0 mesh-gradient opacity-30" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -613,7 +613,7 @@ export function About() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
-            className="text-center mb-16"
+            className="text-center mb-8"
           >
             <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4">
               Part of Our <span className="text-gradient">Ecosystem</span>
@@ -684,7 +684,7 @@ export function About() {
       </section>
 
       {/* ── CTA STRIP ── */}
-      <section className="relative py-28 overflow-hidden border-t border-[var(--foreground)]/5">
+      <section className="relative py-8 overflow-hidden border-t border-[var(--foreground)]/5">
         <motion.div className="absolute inset-0"
           animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}

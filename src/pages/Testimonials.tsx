@@ -33,14 +33,14 @@ export function Testimonials() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[var(--background)] py-24 transition-colors duration-300">
+        <div className="min-h-screen bg-[var(--background)] py-8 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <div className="text-center mb-20">
+                <div className="text-center mb-6">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-5xl font-display font-bold text-[var(--foreground)] mb-6"
+                        className="text-4xl md:text-5xl font-display font-bold text-[var(--foreground)] mb-4"
                     >
                         Success <span className="text-brand-400">Stories</span>
                     </motion.h1>
@@ -50,7 +50,7 @@ export function Testimonials() {
                 </div>
 
                 {/* Statistics Center */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
                     {[
                         { label: 'Courses', value: '120+', icon: Rocket, color: 'text-brand-400' },
                         { label: 'Students', value: '10K+', icon: Heart, color: 'text-pink-500' },
@@ -112,7 +112,7 @@ export function Testimonials() {
                     ))}
                 </div>
 
-                <div className="mt-24 text-center">
+                <div className="mt-10 text-center">
                     <button className="inline-flex items-center gap-2 px-10 py-5 rounded-full bg-premium-gradient text-white font-bold text-lg hover:shadow-2xl hover:shadow-brand-500/20 transition-all transform hover:-translate-y-1">
                         Start Your Success Story
                     </button>

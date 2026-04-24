@@ -91,9 +91,9 @@ export function CourseDetail() {
     }
 
     return (
-        <div className="min-h-screen bg-[var(--background)] pt-20 transition-colors duration-300">
+        <div className="min-h-screen bg-[var(--background)] pt-12 transition-colors duration-300">
             {/* Course Hero */}
-            <section className="relative py-20 overflow-hidden border-b border-white/5">
+            <section className="relative py-10 overflow-hidden border-b border-white/5">
                 <div className="absolute inset-0 z-0">
                     <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-500/10 blur-[120px]" />
                     <img
@@ -206,10 +206,10 @@ export function CourseDetail() {
             </section>
 
             {/* Content Tabs */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
                     <div className="lg:col-span-2">
-                        <div className="mb-16">
+                        <div className="mb-10">
                             <h2 className="text-2xl font-bold text-[var(--foreground)] mb-6">What you'll learn</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {(whatYouWillLearn || [
@@ -228,7 +228,7 @@ export function CourseDetail() {
                             </div>
                         </div>
 
-                        <div className="mb-16">
+                        <div className="mb-10">
                             <h2 className="text-2xl font-bold text-[var(--foreground)] mb-8">Course Curriculum</h2>
                             <div className="space-y-4">
                                 {sections.length === 0 ? (

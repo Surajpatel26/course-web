@@ -43,8 +43,8 @@ const navLinks = [
         <header
             className={`fixed top-0 w-full z-50 transition-all duration-500 ${
                 scrolled
-                    ? 'py-3'
-                    : 'py-6'
+                    ? 'py-2'
+                    : 'py-4'
             }`}
         >
             {/* Backdrop bar */}
