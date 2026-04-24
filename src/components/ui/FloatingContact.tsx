@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, User, Mail, MessageSquare, Loader2, CheckCircle } from 'lucide-react';
+import { MessageCircle, X, Send, User, Mail, Loader2, CheckCircle } from 'lucide-react';
 import { api } from '../../lib/api';
 
 export function FloatingContact() {
