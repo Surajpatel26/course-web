@@ -248,7 +248,7 @@ export function Home() {
                     style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(6,182,212,0.4) 50%, transparent 100%)' }} />
 
                 <motion.div style={{ y: heroY, opacity: heroOpacity }}
-                    className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 pt-20">
+                    className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 pt-32">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
 
                         {/* ── Left: Text ── */}

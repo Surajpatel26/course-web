@@ -64,22 +64,13 @@ const navLinks = [
             />
 
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-14">
+                <div className="flex justify-between items-center h-20">
 
                     {/* ── Logo ── */}
-                    <Link to="/" className="flex items-center gap-3 group">
-                        <div className="relative w-9 h-9 flex items-center justify-center rounded-xl"
-                            style={{
-                                background: 'linear-gradient(135deg, #06b6d4, #6366f1, #a855f7)',
-                                boxShadow: '0 0 20px rgba(6,182,212,0.4)',
-                            }}>
-                            <Zap className="w-5 h-5 text-white" />
-                            <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
-                                style={{ background: 'rgba(6,182,212,0.2)' }} />
+                    <Link to="/" className="flex items-center group -ml-2">
+                        <div className="relative h-20 w-64 flex items-center rounded-xl overflow-hidden">
+                            <img src="/logo.png" alt="CodeBySanjay Logo" className="h-full w-full object-contain scale-[1.3]" />
                         </div>
-                        <span className="font-display font-black text-xl tracking-tighter text-white uppercase italic">
-                            Course<span style={{ color: '#06b6d4' }}>Pro</span>
-                        </span>
                     </Link>
 
                     {/* ── Desktop nav ── */}
@@ -89,9 +80,9 @@ const navLinks = [
                                 key={link.name}
                                 to={link.path}
                                 className="relative text-[10px] font-black uppercase tracking-[0.3em] transition-colors duration-300"
-                                style={{ color: isActive(link.path) ? '#06b6d4' : 'rgba(248,250,252,0.35)' }}
-                                onMouseEnter={e => { if (!isActive(link.path)) (e.currentTarget as HTMLElement).style.color = '#f8fafc'; }}
-                                onMouseLeave={e => { if (!isActive(link.path)) (e.currentTarget as HTMLElement).style.color = 'rgba(248,250,252,0.35)'; }}
+                                style={{ color: isActive(link.path) ? '#06b6d4' : '#ffffff' }}
+                                onMouseEnter={e => { if (!isActive(link.path)) (e.currentTarget as HTMLElement).style.color = '#06b6d4'; }}
+                                onMouseLeave={e => { if (!isActive(link.path)) (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}
                             >
                                 {link.name}
                                 {isActive(link.path) && (
@@ -125,7 +116,7 @@ const navLinks = [
                         ) : (
                             <>
                                 <Link to="/login"
-                                    className="text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white/80 transition-colors">
+                                    className="text-[10px] font-black uppercase tracking-widest text-white hover:text-[#06b6d4] transition-colors">
                                     Portal
                                 </Link>
                                 <Link to="/register"

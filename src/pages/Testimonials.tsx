@@ -45,7 +45,7 @@ export function Testimonials() {
                         Success <span className="text-brand-400">Stories</span>
                     </motion.h1>
                     <p className="text-lg text-[var(--foreground)]/60 max-w-2xl mx-auto">
-                        Don't just take our word for it. Join thousands of satisfied students who have transformed their careers with CoursePro.
+                        Don't just take our word for it. Join thousands of satisfied students who have transformed their careers with CodeBySanjay.
                     </p>
                 </div>
 

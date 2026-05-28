@@ -61,7 +61,7 @@ export function Login() {
                         <div className="bg-gradient-to-br from-brand-500 to-blue-500 p-2 rounded-xl group-hover:scale-110 transition-transform">
                             <Lock className="w-6 h-6 text-white" />
                         </div>
-                        <span className="font-display font-bold text-2xl text-[var(--foreground)]">CoursePro</span>
+                        <span className="font-display font-bold text-2xl text-[var(--foreground)]">CodeBySanjay</span>
                     </Link>
                     <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">Welcome Back</h1>
                     <p className="text-[var(--foreground)]/60">Continue your learning journey today</p>

@@ -43,7 +43,7 @@ export function Dashboard() {
                     <div className="bg-brand-500 p-1.5 rounded-lg text-white group-hover:scale-105 transition-transform">
                         <BookOpen className="w-5 h-5" />
                     </div>
-                    <span className="font-display font-bold text-xl text-[var(--foreground)]">CoursePro</span>
+                    <span className="font-display font-bold text-xl text-[var(--foreground)]">CodeBySanjay</span>
                 </Link>
 
                 <nav className="flex-grow space-y-2">
