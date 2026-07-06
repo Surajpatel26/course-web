@@ -4,17 +4,17 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
-    { name: 'Home',        path: '/' },
-    { name: 'Courses',     path: '/courses' },
-    { name: 'Upcoming',    path: '/upcoming-courses' },
-    { name: 'Testimonials',path: '/testimonials' },
-    { name: 'Blog',        path: '/blog' },
-    { name: 'About',       path: '/about' },
-    { name: 'Contact',     path: '/contact' },
+    { name: 'Home', path: '/' },
+    { name: 'Courses', path: '/courses' },
+    { name: 'Upcoming', path: '/upcoming-courses' },
+    { name: 'Testimonials', path: '/testimonials' },
+    { name: 'Blog', path: '/blog' },
+    { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' },
 ];
 
-    export function Navbar() {
-    const [isOpen, setIsOpen]   = useState(false);
+export function Navbar() {
+    const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [user, setUser] = useState<any>(null);
     const location = useLocation();
@@ -26,8 +26,8 @@ const navLinks = [
     }, []);
 
     // close mobile menu on route change
-    useEffect(() => { 
-        setIsOpen(false); 
+    useEffect(() => {
+        setIsOpen(false);
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             setUser(JSON.parse(storedUser));
@@ -41,19 +41,17 @@ const navLinks = [
 
     return (
         <header
-            className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-                scrolled
+            className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled
                     ? 'py-2'
                     : 'py-4'
-            }`}
+                }`}
         >
             {/* Backdrop bar */}
             <div
-                className={`absolute inset-0 transition-all duration-500 ${
-                    scrolled
+                className={`absolute inset-0 transition-all duration-500 ${scrolled
                         ? 'opacity-100'
                         : 'opacity-0'
-                }`}
+                    }`}
                 style={{
                     background: 'rgba(2, 6, 23, 0.88)',
                     backdropFilter: 'blur(24px)',
@@ -104,10 +102,10 @@ const navLinks = [
                                     {user.name || 'Student'}
                                 </span>
                                 <div className="relative">
-                                    <img 
-                                        src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'Student')}&background=06b6d4&color=fff`} 
+                                    <img
+                                        src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'Student')}&background=06b6d4&color=fff`}
                                         className="w-10 h-10 rounded-xl object-cover border border-white/10 group-hover:border-brand-500/50 transition-all font-bold"
-                                        alt={user.name || 'Student'} 
+                                        alt={user.name || 'Student'}
                                         referrerPolicy="no-referrer"
                                     />
                                     <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-brand-500 rounded-full border-2 border-[#020617] shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
@@ -115,10 +113,7 @@ const navLinks = [
                             </Link>
                         ) : (
                             <>
-                                <Link to="/login"
-                                    className="text-[10px] font-black uppercase tracking-widest text-white hover:text-[#06b6d4] transition-colors">
-                                    Portal
-                                </Link>
+
                                 <Link to="/register"
                                     className="relative px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider text-white overflow-hidden"
                                     style={{
@@ -182,10 +177,10 @@ const navLinks = [
                                 {user && (user.email || user.name) ? (
                                     <div className="space-y-3">
                                         <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
-                                            <img 
-                                                src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'Student')}&background=06b6d4&color=fff`} 
+                                            <img
+                                                src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'Student')}&background=06b6d4&color=fff`}
                                                 className="w-12 h-12 rounded-xl object-cover border border-white/10"
-                                                alt={user.name || 'Student'} 
+                                                alt={user.name || 'Student'}
                                                 referrerPolicy="no-referrer"
                                             />
                                             <div className="flex flex-col">

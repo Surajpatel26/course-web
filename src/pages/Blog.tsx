@@ -3,6 +3,7 @@ import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
+import { Loader } from '../components/ui/Loader';
 
 type BlogPost = {
     id: string;
@@ -71,9 +72,9 @@ export function Blog() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {isLoading ? (
-                        Array.from({ length: 6 }).map((_, i) => (
-                            <div key={i} className="h-[500px] rounded-[48px] bg-glass animate-pulse border border-[var(--glass-border)]" />
-                        ))
+                        <div className="col-span-full">
+                            <Loader />
+                        </div>
                     ) : (
                         posts.map((post, i) => (
                             <motion.article

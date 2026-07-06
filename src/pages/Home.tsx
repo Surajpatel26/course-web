@@ -11,6 +11,7 @@ import { AnimatedCounter } from '../components/ui/AnimatedCounter';
 import { LogoMarquee } from '../components/ui/LogoMarquee';
 import { MotionGraphic } from '../components/ui/MotionGraphic';
 import { CryptoHero3D } from '../components/ui/CryptoHero3D';
+import { Loader } from '../components/ui/Loader';
 
 /* ─── Typing animation hook ─── */
 function useTypingEffect(words: string[], speed = 80, pause = 2200) {
@@ -191,6 +192,7 @@ export function Home() {
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
     const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
     const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const typingText = useTypingEffect(['Mastery.', 'Excellence.', 'Innovation.', 'Leadership.']);
 
@@ -200,10 +202,16 @@ export function Home() {
                 const [c, t] = await Promise.all([api.get<Course[]>('/courses'), api.get<Testimonial[]>('/testimonials')]);
                 setCourses(c);
                 setTestimonials(t);
-            } catch { /* silent */ }
+            } catch { /* silent */ } finally {
+                setIsLoading(false);
+            }
         };
         fetch();
     }, []);
+
+    if (isLoading) {
+        return <Loader />;
+    }
 
     return (
         <div className="flex flex-col min-h-screen" style={{ background: '#020617' }}>

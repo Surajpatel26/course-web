@@ -70,7 +70,7 @@ export function Contact() {
                     {/* Compact Contact Info */}
                     <div className="md:col-span-4 space-y-4">
                         {[
-                            { icon: Mail, label: 'Email Support', value: 'support@coursepro.com', color: 'text-brand-400', bg: 'bg-brand-500/10' },
+                            { icon: Mail, label: 'Email Support', value: 'support@codebysanjay.com', color: 'text-brand-400', bg: 'bg-brand-500/10' },
                             { icon: MessageSquare, label: 'Live Assistance', value: 'Join Discord', color: 'text-blue-400', bg: 'bg-blue-500/10' },
                             { icon: MapPin, label: 'Headquarters', value: 'SF, California', color: 'text-purple-400', bg: 'bg-purple-500/10' },
                         ].map((item, i) => (

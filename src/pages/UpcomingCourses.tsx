@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Calendar, User, ArrowRight, PlayCircle } from 'lucide-react';
 import { api } from '../lib/api';
+import { Loader } from '../components/ui/Loader';
 
 export interface UpcomingCourse {
     id: string;
@@ -92,9 +93,7 @@ export function UpcomingCourses() {
                         <div className="space-y-8">
                             <AnimatePresence mode="popLayout">
                                 {isLoading ? (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-32 text-center">
-                                        <div className="text-[var(--foreground)]/40 font-bold">Loading upcoming courses…</div>
-                                    </motion.div>
+                                    <Loader />
                                 ) : filteredCourses.length > 0 ? (
                                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
                                         {filteredCourses.map((course, idx) => (

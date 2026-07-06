@@ -21,7 +21,7 @@ export function BookDemo() {
                             Scale learning <br /> across your <span className="text-gradient">organization</span>
                         </h1>
                         <p className="text-lg text-slate-300 mb-10 leading-relaxed">
-                            Book a personalized demo of CoursePro Enterprise. Discover how our centralized learning platform can upskill your team effectively.
+                            Book a personalized demo of CodeBySanjay Enterprise. Discover how our centralized learning platform can upskill your team effectively.
                         </p>
 
                         <ul className="space-y-6">

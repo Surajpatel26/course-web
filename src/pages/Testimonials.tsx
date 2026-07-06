@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Star, Quote, Rocket, ShieldCheck, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { api } from '../lib/api';
+import { Loader } from '../components/ui/Loader';
 
 type Testimonial = {
     id: string;
@@ -73,7 +74,9 @@ export function Testimonials() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {isLoading ? (
-                        <div className="text-[var(--foreground)]/40 font-bold">Loading testimonials…</div>
+                        <div className="col-span-full">
+                            <Loader />
+                        </div>
                     ) : testimonials.map((item, i) => (
                         <motion.div
                             key={item.id}

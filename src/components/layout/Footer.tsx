@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Zap, Twitter, Linkedin, Github, ArrowRight } from 'lucide-react';
+import { Twitter, Linkedin, Github, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const cols = [
@@ -66,18 +66,10 @@ export function Footer() {
 
                     {/* Brand col */}
                     <div className="lg:col-span-2 space-y-6">
-                        <Link to="/" className="flex items-center gap-3 group w-fit">
-                            <div
-                                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                                style={{
-                                    background: 'linear-gradient(135deg, #06b6d4, #6366f1, #a855f7)',
-                                    boxShadow: '0 0 20px rgba(6,182,212,0.35)',
-                                }}>
-                                <Zap className="w-5 h-5 text-white" />
+                        <Link to="/" className="flex items-center group -ml-2">
+                            <div className="relative h-20 w-64 flex items-center rounded-xl overflow-hidden">
+                                <img src="/logo.png" alt="CodeBySanjay Logo" className="h-full w-full object-contain scale-[1.3]" />
                             </div>
-                            <span className="font-display font-black text-2xl tracking-tighter text-white uppercase italic">
-                                Course<span style={{ color: '#06b6d4' }}>Pro</span>
-                            </span>
                         </Link>
 
                         <p className="text-white/35 text-sm leading-relaxed max-w-xs font-medium">
@@ -152,7 +144,7 @@ export function Footer() {
                 <div
                     className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-white/20 text-xs font-medium"
                     style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-                    <span>© {new Date().getFullYear()} CoursePro Inc. All rights reserved.</span>
+                    <span>© {new Date().getFullYear()} CodeBySanjay Inc. All rights reserved.</span>
                     {/* <div className="flex items-center gap-2">
                         <span>Built with</span>
                         <span style={{ color: '#06b6d4' }}>React</span>

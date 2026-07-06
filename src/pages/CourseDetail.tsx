@@ -15,6 +15,7 @@ import {
 import { motion } from 'framer-motion';
 import { api } from '../lib/api';
 import type { Course } from '../components/ui/CourseCard';
+import { Loader } from '../components/ui/Loader';
 
 type CourseSection = {
     id: string;
@@ -72,9 +73,7 @@ export function CourseDetail() {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-[var(--background)] pt-28 transition-colors duration-300">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-[var(--foreground)]/60 font-bold">Loading course…</div>
-                </div>
+                <Loader />
             </div>
         );
     }

@@ -1,7 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
-import { Play, X, Sparkles, GraduationCap, Heart, Zap, ExternalLink, Loader2 } from 'lucide-react';
+import { Play, X, Sparkles, GraduationCap, Heart, Zap, ExternalLink } from 'lucide-react';
 import { api } from '../lib/api';
+import { Loader } from '../components/ui/Loader';
 
 // Fallback assets
 import img1Fallback from '../assets/WhatsApp Image 2024-02-07 at 4.21.06 PM.jpeg';
@@ -170,7 +171,7 @@ export function About() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-        <Loader2 className="w-10 h-10 text-cyan-500 animate-spin" />
+        <Loader />
       </div>
     );
   }
@@ -218,7 +219,7 @@ export function About() {
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 mb-6">
                 <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                <span className="text-xs font-black uppercase tracking-widest text-cyan-400">About CoursePro</span>
+                <span className="text-xs font-black uppercase tracking-widest text-cyan-400">About CodeBySanjay</span>
               </div>
 
               <h1 className="text-5xl md:text-6xl xl:text-7xl font-display font-black leading-[0.95] tracking-tighter mb-8 whitespace-pre-line">
@@ -226,7 +227,7 @@ export function About() {
               </h1>
 
               <p className="text-xl text-[var(--foreground)]/60 leading-relaxed max-w-xl mb-10">
-                {aboutData?.hero_desc || 'We started CoursePro with a simple idea: everyone deserves access to world-class education. Today, we connect 50,000+ ambitious learners with elite industry experts across 120+ countries.'}
+                {aboutData?.hero_desc || 'We started CodeBySanjay with a simple idea: everyone deserves access to world-class education. Today, we connect 50,000+ ambitious learners with elite industry experts across 120+ countries.'}
               </p>
 
               <motion.button
@@ -433,7 +434,7 @@ export function About() {
             className="text-center mb-8"
           >
             <h2 className="text-4xl md:text-5xl font-display font-black tracking-tight mb-4">
-              Life at <span className="text-gradient">CoursePro</span>
+              Life at <span className="text-gradient">CodeBySanjay</span>
             </h2>
             <p className="text-[var(--foreground)]/50 text-lg max-w-xl mx-auto">
               Real moments. Real learners. Real transformation.
@@ -568,7 +569,7 @@ export function About() {
               What We <span className="text-gradient">Stand For</span>
             </h2>
             <p className="text-[var(--foreground)]/50 text-lg max-w-xl mx-auto">
-              Four principles that guide everything we build at CoursePro.
+              Four principles that guide everything we build at CodeBySanjay.
             </p>
           </motion.div>
 
@@ -619,7 +620,7 @@ export function About() {
               Part of Our <span className="text-gradient">Ecosystem</span>
             </h2>
             <p className="text-[var(--foreground)]/50 text-lg max-w-2xl mx-auto">
-              CoursePro is proud to be part of a larger family of educational platforms. Explore our specialized organizations dedicated to technology.
+              CodeBySanjay is proud to be part of a larger family of educational platforms. Explore our specialized organizations dedicated to technology.
             </p>
           </motion.div>
 
@@ -646,8 +647,7 @@ export function About() {
                     <ExternalLink className="w-5 h-5 text-cyan-400 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
                   </h3>
                   <p className="text-[var(--foreground)]/60">
-                    Your ultimate destination for mastering programming, algorithms, and software development.
-                  </p>
+                    Empower your coding journey with CodingAnna—an all-in-one platform for mastering programming through LeetCode-style coding challenges, online language and database compilers, interactive MCQ assessments, and personalized performance analytics designed to accelerate your learning and technical growth.           </p>
                 </div>
               </TiltCard>
             </motion.a>
@@ -670,12 +670,11 @@ export function About() {
                     <img src={cyberInfoMinesLogo} alt="Cyber Info Mines" className="w-10 h-10 object-contain" />
                   </div>
                   <h3 className="text-2xl font-black mb-3 text-[var(--foreground)] flex items-center gap-2">
-                    Cyberinfomines
+                    Cyberinfomines Technology
                     <ExternalLink className="w-5 h-5 text-purple-400 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
                   </h3>
                   <p className="text-[var(--foreground)]/60">
-                    Leading the frontier in cybersecurity education, ethical hacking, and advanced digital forensics.
-                  </p>
+                    Cyberinfomines Technology delivers industry-driven training in cybersecurity, ethical hacking, digital forensics, software development, and emerging technologies. We equip students, professionals, and organizations with practical, hands-on learning through academic programs, workshops, and corporate training to build future-ready skills                </p>
                 </div>
               </TiltCard>
             </motion.a>
@@ -705,7 +704,7 @@ export function About() {
               <span className="text-gradient">learning journey?</span>
             </h2>
             <p className="text-[var(--foreground)]/60 mb-10 text-lg">
-              Join 50,000+ learners already transforming their careers with CoursePro.
+              Join 50,000+ learners already transforming their careers with CodeBySanjay.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a

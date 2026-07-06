@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, Hash } from 'lucide-react';
 import { CourseCard, type Course } from '../components/ui/CourseCard';
 import { api } from '../lib/api';
+import { Loader } from '../components/ui/Loader';
 
 export function Courses() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -135,9 +136,7 @@ export function Courses() {
                         <div className="space-y-8">
                             <AnimatePresence mode="popLayout">
                                 {isLoading ? (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-32 text-center">
-                                        <div className="text-[var(--foreground)]/40 font-bold">Loading courses…</div>
-                                    </motion.div>
+                                    <Loader />
                                 ) : Object.entries(groupedCourses).length > 0 ? (
                                     Object.entries(groupedCourses).map(([category, courses], idx) => (
                                         <motion.section

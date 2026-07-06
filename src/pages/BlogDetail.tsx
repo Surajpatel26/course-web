@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ArrowLeft, Hash } from 'lucide-react';
 import { api } from '../lib/api';
+import { Loader } from '../components/ui/Loader';
 
 type BlogPost = {
     id: string;
@@ -42,7 +43,7 @@ export function BlogDetail() {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-[var(--background)] flex flex-col items-center justify-center p-4 transition-colors">
-                <div className="w-20 h-20 border-4 border-brand-500/20 border-t-brand-500 rounded-full animate-spin" />
+                <Loader />
             </div>
         );
     }
