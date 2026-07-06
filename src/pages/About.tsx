@@ -126,7 +126,15 @@ export function About() {
     async function fetchAbout() {
       try {
         const data = await api.get('/about');
-        setAboutData(data);
+        
+        // Sanitize any accidental "CoursePro" strings from the database
+        const sanitizedData = { ...data };
+        for (const key in sanitizedData) {
+          if (typeof sanitizedData[key] === 'string') {
+            sanitizedData[key] = sanitizedData[key].replace(/CoursePro/gi, 'CodeBySanjay');
+          }
+        }
+        setAboutData(sanitizedData);
       } catch (err) {
         console.error('Failed to fetch about data:', err);
       } finally {
@@ -257,7 +265,7 @@ export function About() {
             <TiltCard className="absolute left-0 top-0 w-[70%] h-[65%]" depth={1.2}>
               <div className="relative w-full h-full rounded-3xl overflow-hidden border border-cyan-500/20 shadow-2xl"
                 style={{ boxShadow: '0 0 60px rgba(6,182,212,0.15), 0 20px 60px rgba(0,0,0,0.5)' }}>
-                <img src={images.img2} alt="Students learning" className="w-full h-full object-cover" />
+                <img src={images.img2} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img2Fallback; }} alt="Students learning" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/40 to-transparent" />
                 {/* Corner badge */}
                 <div className="absolute top-3 left-3 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-cyan-500/30 backdrop-blur-sm">
@@ -270,7 +278,7 @@ export function About() {
             <TiltCard className="absolute right-0 bottom-0 w-[60%] h-[55%]" depth={0.9}>
               <div className="relative w-full h-full rounded-3xl overflow-hidden border border-purple-500/20 shadow-2xl"
                 style={{ boxShadow: '0 0 60px rgba(168,85,247,0.15), 0 20px 60px rgba(0,0,0,0.5)' }}>
-                <img src={images.img4} alt="Students with instructor" className="w-full h-full object-cover" />
+                <img src={images.img4} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img4Fallback; }} alt="Students with instructor" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-tl from-slate-950/40 to-transparent" />
               </div>
             </TiltCard>
@@ -279,7 +287,7 @@ export function About() {
             <TiltCard className="absolute right-4 top-4 w-[32%] h-[40%]" depth={1.5}>
               <div className="relative w-full h-full rounded-2xl overflow-hidden border border-indigo-500/20 shadow-xl"
                 style={{ boxShadow: '0 0 40px rgba(99,102,241,0.2)' }}>
-                <img src={images.img5} alt="Students" className="w-full h-full object-cover" />
+                <img src={images.img5} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img5Fallback; }} alt="Students" className="w-full h-full object-cover" />
               </div>
             </TiltCard>
 
@@ -334,7 +342,7 @@ export function About() {
                   className="relative rounded-3xl overflow-hidden cursor-pointer group border border-indigo-500/20"
                   style={{ boxShadow: '0 0 80px rgba(99,102,241,0.2), 0 30px 80px rgba(0,0,0,0.5)' }}
                 >
-                  <img src={images.img1} alt="Video thumbnail" className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <img src={images.img1} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img1Fallback; }} alt="Video thumbnail" className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-700" />
 
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
@@ -383,7 +391,11 @@ export function About() {
 
               {/* Mini image row */}
               <div className="flex gap-3">
-                {[images.videoMini1, images.videoMini2, images.videoMini3].map((src, i) => (
+                {[
+                  { src: images.videoMini1, fallback: img3Fallback },
+                  { src: images.videoMini2, fallback: img5Fallback },
+                  { src: images.videoMini3, fallback: img4Fallback }
+                ].map((item, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
@@ -393,7 +405,7 @@ export function About() {
                     className="relative overflow-hidden rounded-2xl border border-white/10 flex-1 aspect-square"
                     style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}
                   >
-                    <img src={src} alt="" className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
+                    <img src={item.src} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = item.fallback; }} alt="" className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
                   </motion.div>
                 ))}
               </div>
@@ -454,7 +466,7 @@ export function About() {
                 <TiltCard depth={0.7}>
                   <div className="relative overflow-hidden rounded-3xl border border-cyan-500/15 group"
                     style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
-                    <img src={images.gallery1} alt="" className="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery1} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img2Fallback; }} alt="" className="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <motion.div
                       className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-slate-950/80 border border-cyan-500/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -473,7 +485,7 @@ export function About() {
                 <TiltCard depth={0.6}>
                   <div className="relative overflow-hidden rounded-3xl border border-purple-500/15 group"
                     style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
-                    <img src={images.gallery2} alt="" className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery2} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img5Fallback; }} alt="" className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </TiltCard>
@@ -492,7 +504,7 @@ export function About() {
                 <TiltCard depth={1}>
                   <div className="relative overflow-hidden rounded-3xl border border-indigo-500/20 group"
                     style={{ boxShadow: '0 0 60px rgba(99,102,241,0.15), 0 30px 60px rgba(0,0,0,0.5)' }}>
-                    <img src={images.gallery3} alt="" className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery3} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img3Fallback; }} alt="" className="w-full aspect-[3/4] object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent" />
                     <div className="absolute bottom-5 left-5 right-5">
                       <div className="text-[10px] font-black uppercase tracking-widest text-indigo-400 mb-1">🏳 Community Event</div>
@@ -514,7 +526,7 @@ export function About() {
                 <TiltCard depth={0.8}>
                   <div className="relative overflow-hidden rounded-3xl border border-cyan-500/15 group"
                     style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.4)' }}>
-                    <img src={images.gallery4} alt="" className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery4} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img4Fallback; }} alt="" className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </TiltCard>
@@ -532,7 +544,7 @@ export function About() {
                     className="relative overflow-hidden rounded-3xl border border-purple-500/20 cursor-pointer group"
                     style={{ boxShadow: '0 0 50px rgba(168,85,247,0.15)' }}
                   >
-                    <img src={images.gallery5} alt="" className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={images.gallery5} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = img1Fallback; }} alt="" className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-slate-950/30 flex items-center justify-center">
                       <motion.div
                         animate={{ scale: [1, 1.1, 1] }}
